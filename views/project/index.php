@@ -4,7 +4,11 @@ $projects = $project_obj->get_projects();
 ?>
 
 <div class="icon32" id="icon-themes"><br></div>
-<h2><?php _e( 'Projects', 'cpm' ); ?> <?php if ( $project_obj->has_admin_rights() ) : ?> <a href="#" id="cpm-create-project" class="add-new-h2"><?php _e( 'Add New', 'cpm' ); ?></a> <?php endif; ?> </h2>
+<h2><?php _e( 'Projects', 'cpm' ); ?> 
+    <?php if ( $project_obj->has_admin_rights() ) { ?> 
+        <a href="#" id="cpm-create-project" class="add-new-h2"><?php _e( 'Add New', 'cpm' ); ?></a> 
+    <?php } ?> 
+</h2>
 
 <div class="cpm-projects">
 
@@ -23,10 +27,9 @@ $projects = $project_obj->get_projects();
                 }
                 ?>
 
-
                 <tr id="post-<?php echo $project->ID; ?>" class="post-<?php echo $project->ID; ?> type-project" valign="top">
                     <th scope="row" class="check-column">
-                        <label class="screen-reader-text" for="cb-select-<?php echo $project->ID; ?>">Select Hello world!</label>
+                        <label class="screen-reader-text" for="cb-select-<?php echo $project->ID; ?>"><?php echo get_the_title( $project->ID ); ?></label>
                         <input id="cb-select-<?php echo $project->ID; ?>" type="checkbox" name="post[]" value="<?php echo $project->ID; ?>" />
                     </th>
                     
