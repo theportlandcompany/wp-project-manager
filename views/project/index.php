@@ -23,9 +23,10 @@ $projects = $project_obj->get_projects();
                 }
                 ?>
 
+
                 <tr id="post-<?php echo $project->ID; ?>" class="post-<?php echo $project->ID; ?> type-project" valign="top">
                     <th scope="row" class="check-column">
-                        <label class="screen-reader-text" for="cb-select-<?php echo $project->ID; ?>"><?php echo get_the_title( $project->ID ); ?></label>
+                        <label class="screen-reader-text" for="cb-select-<?php echo $project->ID; ?>">Select Hello world!</label>
                         <input id="cb-select-<?php echo $project->ID; ?>" type="checkbox" name="post[]" value="<?php echo $project->ID; ?>" />
                     </th>
                     
@@ -39,9 +40,9 @@ $projects = $project_obj->get_projects();
                     </td>           
                     <td class="author column-author"><a href="#author-filter"><?php echo $project->users[0]; ?></a></td>       
                     <td class="comments column-comments">
-                        <div class="post-com-count-wrapper"><a href='#link-to-comments' title='Post Count' class='post-com-count'><span class='comment-count'>[comment count here]</span></a></div>
+                        <div class="post-com-count-wrapper"><a href='#link-to-comments' title='Post Count' class='post-com-count'><span class='comment-count'>[count]</span></a></div>
                     </td>
-                    <td class="date column-date"><abbr title="date">[date created here]</abbr><br />[Publish status here]]</td>      
+                    <td class="date column-date"><abbr title="date">[created]</abbr><br />[published]</td>      
                 </tr>
 
             <?php } ?>
@@ -49,7 +50,7 @@ $projects = $project_obj->get_projects();
         </tbody>
         <tfoot>
         <tr>
-            <th scope='col'  class='manage-column column-cb check-column'  style=""><label class="screen-reader-text" for="cb-select-all-2">Select All</label><input id="cb-select-all-2" type="checkbox" /></th><th scope='col'  class='manage-column column-title sortable desc'  style=""><a href="#order-by-title-toggle"><span>Title</span><span class="sorting-indicator"></span></a></th><th scope='col'  class='manage-column column-author'  style="">Author</th><th scope='col'  class='manage-column column-categories'  style="">Categories</th><th scope='col'  class='manage-column column-tags'  style="">Tags</th><th scope='col'  class='manage-column column-comments num sortable desc'  style=""><a href="#order-by-comments-count-toggle"><span><span class="vers"><div title="Comments" class="comment-grey-bubble"></div></span></span><span class="sorting-indicator"></span></a></th><th scope='col'  class='manage-column column-date sortable asc'  style=""><a href="order-by-date-toggle"><span>Date</span><span class="sorting-indicator"></span></a></th> </tr>
+            <th scope='col'  class='manage-column column-cb check-column'  style=""><label class="screen-reader-text" for="cb-select-all-2">Select All</label><input id="cb-select-all-2" type="checkbox" /></th><th scope='col'  class='manage-column column-title sortable desc'  style=""><a href="#order-by-title-toggle"><span>Title</span><span class="sorting-indicator"></span></a></th><th scope='col'  class='manage-column column-author'  style="">Author</th><th scope='col'  class='manage-column column-comments num sortable desc'  style=""><a href="#order-by-comments-count-toggle"><span><span class="vers"><div title="Comments" class="comment-grey-bubble"></div></span></span><span class="sorting-indicator"></span></a></th><th scope='col'  class='manage-column column-date sortable asc'  style=""><a href="order-by-date-toggle"><span>Date</span><span class="sorting-indicator"></span></a></th> </tr>
         </tfoot>
     </table>
 
