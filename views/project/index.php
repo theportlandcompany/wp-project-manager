@@ -11,7 +11,7 @@ $projects = $project_obj->get_projects();
     <table class="wp-list-table widefat fixed posts" cellspacing="0">
         <thead>
         <tr>
-            <th scope='col' id='cb' class='manage-column column-cb check-column'  style=""><label class="screen-reader-text" for="cb-select-all-1">Select All</label><input id="cb-select-all-1" type="checkbox" /></th><th scope='col' id='title' class='manage-column column-title sortable desc'  style=""><a href="#order-by-title-toggle"><span>Title</span><span class="sorting-indicator"></span></a></th><th scope='col' id='author' class='manage-column column-author'  style="">Author</th><th scope='col' id='categories' class='manage-column column-categories'  style="">Categories</th><th scope='col' id='tags' class='manage-column column-tags'  style="">Tags</th><th scope='col' id='comments' class='manage-column column-comments num sortable desc'  style=""><a href="#order-by-postcount-toggle"><span><span class="vers"><div title="Comments" class="comment-grey-bubble"></div></span></span><span class="sorting-indicator"></span></a></th><th scope='col' id='date' class='manage-column column-date sortable asc'  style=""><a href="sort-by-date-toggle"><span>Date</span><span class="sorting-indicator"></span></a></th>   </tr>
+            <th scope='col' id='cb' class='manage-column column-cb check-column'  style=""><label class="screen-reader-text" for="cb-select-all-1">Select All</label><input id="cb-select-all-1" type="checkbox" /></th><th scope='col' id='title' class='manage-column column-title sortable desc'  style=""><a href="#order-by-title-toggle"><span>Title</span><span class="sorting-indicator"></span></a></th><th scope='col' id='author' class='manage-column column-author'  style="">Author</th><th scope='col' id='comments' class='manage-column column-comments num sortable desc'  style=""><a href="#order-by-postcount-toggle"><span><span class="vers"><div title="Comments" class="comment-grey-bubble"></div></span></span><span class="sorting-indicator"></span></a></th><th scope='col' id='date' class='manage-column column-date sortable asc'  style=""><a href="sort-by-date-toggle"><span>Date</span><span class="sorting-indicator"></span></a></th>   </tr>
         </thead>
 
         <tbody id="the-list">
@@ -25,7 +25,7 @@ $projects = $project_obj->get_projects();
 
                 <tr id="post-<?php echo $project->ID; ?>" class="post-<?php echo $project->ID; ?> type-project" valign="top">
                     <th scope="row" class="check-column">
-                        <label class="screen-reader-text" for="cb-select-<?php echo $project->ID; ?>">Select Hello world!</label>
+                        <label class="screen-reader-text" for="cb-select-<?php echo $project->ID; ?>"><?php echo get_the_title( $project->ID ); ?></label>
                         <input id="cb-select-<?php echo $project->ID; ?>" type="checkbox" name="post[]" value="<?php echo $project->ID; ?>" />
                     </th>
                     
