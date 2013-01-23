@@ -4,43 +4,54 @@ $projects = $project_obj->get_projects();
 ?>
 
 <div class="icon32" id="icon-themes"><br></div>
-<h2><?php _e( 'Project Manager', 'cpm' ); ?></h2>
+<h2><?php _e( 'Projects', 'cpm' ); ?> <?php if ( $project_obj->has_admin_rights() ) : ?> <a href="#" id="cpm-create-project" class="add-new-h2"><?php _e( 'Add New', 'cpm' ); ?></a> <?php endif; ?> </h2>
 
 <div class="cpm-projects">
 
-    <?php //show only for editor or above ?>
-    <?php if ( $project_obj->has_admin_rights() ) { ?>
-        <nav class="cpm-new-project">
-            <a href="#" id="cpm-create-project"><span><?php _e( 'New Project', 'cpm' ); ?></span></a>
-        </nav>
-    <?php } ?>
+    <table class="wp-list-table widefat fixed posts" cellspacing="0">
+        <thead>
+        <tr>
+            <th scope='col' id='cb' class='manage-column column-cb check-column'  style=""><label class="screen-reader-text" for="cb-select-all-1">Select All</label><input id="cb-select-all-1" type="checkbox" /></th><th scope='col' id='title' class='manage-column column-title sortable desc'  style=""><a href="#order-by-title-toggle"><span>Title</span><span class="sorting-indicator"></span></a></th><th scope='col' id='author' class='manage-column column-author'  style="">Author</th><th scope='col' id='categories' class='manage-column column-categories'  style="">Categories</th><th scope='col' id='tags' class='manage-column column-tags'  style="">Tags</th><th scope='col' id='comments' class='manage-column column-comments num sortable desc'  style=""><a href="#order-by-postcount-toggle"><span><span class="vers"><div title="Comments" class="comment-grey-bubble"></div></span></span><span class="sorting-indicator"></span></a></th><th scope='col' id='date' class='manage-column column-date sortable asc'  style=""><a href="sort-by-date-toggle"><span>Date</span><span class="sorting-indicator"></span></a></th>   </tr>
+        </thead>
 
-    <?php
-    foreach ($projects as $project) {
-        if ( !$project_obj->has_permission( $project ) ) {
-            continue;
-        }
-        ?>
+        <tbody id="the-list">
 
-        <article class="cpm-project">
-            <a href="<?php echo cpm_url_project_details( $project->ID ); ?>">
-                <h5><?php echo get_the_title( $project->ID ); ?></h5>
+            <?php
+            foreach ($projects as $project) {
+                if ( !$project_obj->has_permission( $project ) ) {
+                    continue;
+                }
+                ?>
 
-                <div class="cpm-project-detail"><?php echo cpm_excerpt( $project->post_content, 55 ); ?></div>
-                <div class="cpm-project-meta">
-                    <?php echo cpm_project_summary( $project->info ); ?>
-                </div>
-                <footer class="cpm-project-people">
-                    <?php
-                    foreach ($project->users as $user) {
-                        echo get_avatar( $user['id'], 48 );
-                    }
-                    ?>
-                </footer>
-            </a>
-        </article>
+                <tr id="post-<?php echo $project->ID; ?>" class="post-<?php echo $project->ID; ?> type-project" valign="top">
+                    <th scope="row" class="check-column">
+                        <label class="screen-reader-text" for="cb-select-<?php echo $project->ID; ?>">Select Hello world!</label>
+                        <input id="cb-select-<?php echo $project->ID; ?>" type="checkbox" name="post[]" value="<?php echo $project->ID; ?>" />
+                    </th>
+                    
+                    <td class="post-title page-title column-title"><strong><a class="row-title" href="<?php echo cpm_url_project_details( $project->ID ); ?>" title="Details of &#8220;<?php echo get_the_title( $project->ID ); ?>&#8221;"><?php echo get_the_title( $project->ID ); ?></a></strong>
+                        <div class="row-actions">
+                            <span class='edit'><a href="#link-for-edit" title="Edit this item">Edit</a> | </span>
+                            <span class='inline hide-if-no-js'><a href="#" class="editinline" title="Edit this item inline">Quick&nbsp;Edit</a> | </span>
+                            <span class='trash'><a class='submitdelete' title='Move this item to the Trash' href='#move-to-trash-action'>Trash</a> | </span>
+                        </div>
+                    
+                    </td>           
+                    <td class="author column-author"><a href="#author-filter"><?php echo $project->users[0]; ?></a></td>       
+                    <td class="comments column-comments">
+                        <div class="post-com-count-wrapper"><a href='#link-to-comments' title='Post Count' class='post-com-count'><span class='comment-count'>[comment count here]</span></a></div>
+                    </td>
+                    <td class="date column-date"><abbr title="date">[date created here]</abbr><br />[Publish status here]]</td>      
+                </tr>
 
-    <?php } ?>
+            <?php } ?>
+
+        </tbody>
+        <tfoot>
+        <tr>
+            <th scope='col'  class='manage-column column-cb check-column'  style=""><label class="screen-reader-text" for="cb-select-all-2">Select All</label><input id="cb-select-all-2" type="checkbox" /></th><th scope='col'  class='manage-column column-title sortable desc'  style=""><a href="#order-by-title-toggle"><span>Title</span><span class="sorting-indicator"></span></a></th><th scope='col'  class='manage-column column-author'  style="">Author</th><th scope='col'  class='manage-column column-categories'  style="">Categories</th><th scope='col'  class='manage-column column-tags'  style="">Tags</th><th scope='col'  class='manage-column column-comments num sortable desc'  style=""><a href="#order-by-comments-count-toggle"><span><span class="vers"><div title="Comments" class="comment-grey-bubble"></div></span></span><span class="sorting-indicator"></span></a></th><th scope='col'  class='manage-column column-date sortable asc'  style=""><a href="order-by-date-toggle"><span>Date</span><span class="sorting-indicator"></span></a></th> </tr>
+        </tfoot>
+    </table>
 
 </div>
 
