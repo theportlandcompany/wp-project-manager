@@ -37,7 +37,8 @@ $projects = $project_obj->get_projects();
                         <div class="row-actions">
                             <span class='edit'><a href="#link-for-edit" title="Edit this item">Edit</a> | </span>
                             <span class='inline hide-if-no-js'><a href="#" class="editinline" title="Edit this item inline">Quick&nbsp;Edit</a> | </span>
-                            <span class='trash'><a class='submitdelete' title='Move this item to the Trash' href='#move-to-trash-action'>Trash</a> | </span>
+                            <span class='complete'><a class='complete' title='Complete this item' data-id="<?php echo $project->ID ?>" href='#complete-action'>Complete</a> | </span>
+                            <span class='trash'><a class='cpm-project-delete-link' title='Move this item to the Trash' data-id="<?php echo $project->ID ?>" href='#move-to-trash-action'>Trash</a> | </span>
                         </div>
                     
                     </td>           

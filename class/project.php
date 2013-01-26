@@ -71,7 +71,7 @@ class CPM_Project {
             'post_title' => $posted['project_name'],
             'post_content' => $posted['project_description'],
             'post_type' => 'project',
-            'post_status' => 'publish'
+            'post_status' => apply_filters('cpm_post_status', 'publish')
         );
 
         if ( $is_update ) {

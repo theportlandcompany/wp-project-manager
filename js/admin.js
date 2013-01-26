@@ -151,14 +151,13 @@
                 e.preventDefault();
 
                 var self = $(this),
-                    message = self.data('confirm'),
                     data = {
-                        project_id: self.data('project_id'),
+                        project_id: self.attr('data-id'),
                         action: 'cpm_project_delete',
                         _wpnonce: CPM_Vars.nonce
                     };
 
-                if(confirm(message)) {
+                if(confirm('Move project to trash?')) {
 
                     self.addClass('cpm-loading');
 
