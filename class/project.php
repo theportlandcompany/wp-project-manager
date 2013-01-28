@@ -71,7 +71,7 @@ class CPM_Project {
             'post_title' => $posted['project_name'],
             'post_content' => $posted['project_description'],
             'post_type' => 'project',
-            'post_status' => apply_filters('cpm_post_status', 'publish')
+            'post_status' => 'publish'
         );
 
         if ( $is_update ) {
@@ -117,16 +117,41 @@ class CPM_Project {
     }
 
     /**
+     * Complete a project
+     *
+     * @param int $project_id
+     */
+    function complete( $project_id ) {
+        do_action( 'cpm_project_complete', $project_id );
+
+        $data = array(
+            'ID' => $project_id,
+            'post_status' => 'Complete'
+        );
+
+        wp_update_post( $data );
+    }
+
+    /**
      * Get all the projects
      *
      * @param int $count
+     * @param string $status
      * @return object
      */
-    function get_projects( $count = -1 ) {
-        $projects = get_posts( array(
-            'numberposts' => $count,
-            'post_type' => 'project'
-        ));
+    function get_projects( $count = -1, $status = 'publish' ) {
+        global $wpdb;
+        $inbuilt_statuses = array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash');
+
+       if ( !in_array( $status, $inbuilt_statuses ) ) {
+            $projects = $wpdb->get_results( "SELECT * FROM $wpdb->posts WHERE post_status = '$status'" );
+       } else {
+            $projects = get_posts( array(
+                'numberposts' => $count,
+                'post_type' => 'project',
+                'post_status' => $status
+            ));
+        }
 
         foreach ($projects as &$project) {
             $project->info = $this->get_info( $project->ID );

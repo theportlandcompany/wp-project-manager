@@ -17,6 +17,16 @@ function cpm_url_projects() {
 }
 
 /**
+ * Displays root URL for completed projects
+ *
+ * @since 0.1
+ * @return string
+ */
+function cpm_url_completed_projects() {
+    return sprintf( '%s?page=cpm_projects&post_status=complete', admin_url( 'admin.php' ) );
+}
+
+/**
  * Displays a single project URL
  *
  * @since 0.1
