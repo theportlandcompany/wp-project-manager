@@ -27,6 +27,16 @@ function cpm_url_completed_projects() {
 }
 
 /**
+ * Displays root URL for projects in trash
+ *
+ * @since 0.1
+ * @return string
+ */
+function cpm_url_trashed_projects() {
+    return sprintf( '%s?page=cpm_projects&post_status=trash', admin_url( 'admin.php' ) );
+}
+
+/**
  * Displays a single project URL
  *
  * @since 0.1

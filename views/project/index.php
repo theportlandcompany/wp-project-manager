@@ -9,7 +9,11 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects('', $_GET['
         <a href="#" id="cpm-create-project" class="add-new-h2"><?php _e( 'Add New', 'cpm' ); ?></a> 
     <?php } ?> 
 </h2>
-
+<ul class="subsubsub">
+    <li><a href="<?php echo cpm_url_projects(); ?>"><?php _e( 'Incomplete', 'cpm' ); ?></a> |</li>
+    <li><a href="<?php echo cpm_url_completed_projects(); ?>"><?php _e( 'Completed', 'cpm' ); ?></a> |</li>
+    <li><a href="<?php echo cpm_url_trashed_projects(); ?>"><?php _e( 'Trash', 'cpm' ); ?></a></li>
+</ul>
 <div class="cpm-projects">
 
     <table class="wp-list-table widefat fixed posts" cellspacing="0">
@@ -36,9 +40,9 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects('', $_GET['
                     <td class="post-title page-title column-title"><strong><a class="row-title" href="<?php echo cpm_url_project_details( $project->ID ); ?>" title="Details of &#8220;<?php echo get_the_title( $project->ID ); ?>&#8221;"><?php echo get_the_title( $project->ID ); ?></a></strong>
                         <div class="row-actions">
                             <span class='edit'><a href="#link-for-edit" title="Edit this item">Edit</a> | </span>
-                            <span class='inline hide-if-no-js'><a href="#" class="editinline" title="Edit this item inline">Quick&nbsp;Edit</a> | </span>
-                            <span class='complete'><a class='cpm-project-complete-link' title='Complete this item' data-id="<?php echo $project->ID ?>" href='#complete-action'>Complete</a> | </span>
-                            <span class='trash'><a class='cpm-project-delete-link' title='Move this item to the Trash' data-id="<?php echo $project->ID ?>" href='#move-to-trash-action'>Trash</a> | </span>
+                            <span class='complete'><a class='cpm-project-complete-link' title='Complete this project' data-id="<?php echo $project->ID ?>" href='#complete-action'>Complete</a> | </span>
+                            <span class='trash'><a class='cpm-project-trash-link' title='Move this project to the Trash' data-id="<?php echo $project->ID ?>" href='#move-to-trash-action'>Trash</a> | </span>
+                            <span class='delete'><a class='cpm-project-delete-link submitdelete' title='Delete this project permanently' data-id="<?php echo $project->ID ?>" href='#delete-action'>Delete Permanently</a></span>
                         </div>
                     
                     </td>           

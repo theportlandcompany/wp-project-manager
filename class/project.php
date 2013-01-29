@@ -126,7 +126,23 @@ class CPM_Project {
 
         $data = array(
             'ID' => $project_id,
-            'post_status' => 'Complete'
+            'post_status' => 'complete'
+        );
+
+        wp_update_post( $data );
+    }
+
+    /**
+     * Trash a project
+     *
+     * @param int $project_id
+     */
+    function trash( $project_id ) {
+        do_action( 'cpm_project_trash', $project_id );
+
+        $data = array(
+            'ID' => $project_id,
+            'post_status' => 'trash'
         );
 
         wp_update_post( $data );

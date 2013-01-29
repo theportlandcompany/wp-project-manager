@@ -18,6 +18,7 @@ class CPM_Ajax {
         add_action( 'wp_ajax_cpm_project_update', array($this, 'project_edit') );
         add_action( 'wp_ajax_cpm_project_delete', array($this, 'project_delete') );
         add_action( 'wp_ajax_cpm_project_complete', array($this, 'project_complete') );
+        add_action( 'wp_ajax_cpm_project_trash', array($this, 'project_trash') );
 
         add_action( 'wp_ajax_cpm_task_complete', array($this, 'mark_task_complete') );
         add_action( 'wp_ajax_cpm_task_open', array($this, 'mark_task_open') );
@@ -116,6 +117,20 @@ class CPM_Ajax {
         echo json_encode( array(
             'success' => true,
             'url' => cpm_url_completed_projects()
+        ) );
+
+        exit;
+    }
+
+    function project_trash() {
+        $posted = $_POST;
+
+        $project_id = isset( $posted['project_id'] ) ? intval( $posted['project_id'] ) : 0;
+        CPM_Project::getInstance()->trash( $project_id );
+
+        echo json_encode( array(
+            'success' => true,
+            'url' => cpm_url_trashed_projects()
         ) );
 
         exit;
