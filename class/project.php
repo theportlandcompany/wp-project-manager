@@ -160,7 +160,8 @@ class CPM_Project {
         $inbuilt_statuses = array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash');
 
        if ( !in_array( $status, $inbuilt_statuses ) ) {
-            $projects = $wpdb->get_results( "SELECT * FROM $wpdb->posts WHERE post_status = '$status'" );
+            $sql = "SELECT * FROM $wpdb->posts WHERE post_status = '%s'";
+            $projects = $wpdb->get_results( sprintf( $sql, $status ) );
        } else {
             $projects = get_posts( array(
                 'numberposts' => $count,
