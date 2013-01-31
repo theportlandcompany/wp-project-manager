@@ -10,12 +10,12 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects('', $_GET['
     <?php } ?> 
 </h2>
 <ul class="subsubsub">
-    <li><a href="<?php echo cpm_url_projects(); ?>"><?php _e( 'Published', 'cpm' ); ?></a> |</li>
-    <li><a href="<?php echo cpm_url_projects_with_status('complete'); ?>"><?php _e( 'Completed', 'cpm' ); ?></a> |</li>
-    <li><a href="<?php echo cpm_url_projects_with_status('draft'); ?>"><?php _e( 'Drafts', 'cpm' ); ?></a> |</li>
-    <li><a href="<?php echo cpm_url_projects_with_status('pending'); ?>"><?php _e( 'Pending', 'cpm' ); ?></a> |</li>
-    <li><a href="<?php echo cpm_url_projects_with_status('archive'); ?>"><?php _e( 'Archived', 'cpm' ); ?></a> |</li>
-    <li><a href="<?php echo cpm_url_projects_with_status('trash'); ?>"><?php _e( 'Trash', 'cpm' ); ?></a></li>
+    <li><a class="tab <?php echo !isset( $_GET['post_status']) ? 'current' : ''; ?>" href="<?php echo cpm_url_projects(); ?>"><?php _e( 'Published', 'cpm' ); ?></a> |</li>
+    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'complete' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('complete'); ?>"><?php _e( 'Completed', 'cpm' ); ?></a> |</li>
+    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'draft' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('draft'); ?>"><?php _e( 'Drafts', 'cpm' ); ?></a> |</li>
+    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'pending' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('pending'); ?>"><?php _e( 'Pending', 'cpm' ); ?></a> |</li>
+    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'archive' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('archive'); ?>"><?php _e( 'Archived', 'cpm' ); ?></a> |</li>
+    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'trash' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('trash'); ?>"><?php _e( 'Trash', 'cpm' ); ?></a></li>
 </ul>
 <div class="cpm-projects">
 
