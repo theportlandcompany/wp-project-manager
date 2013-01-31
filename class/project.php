@@ -126,7 +126,40 @@ class CPM_Project {
 
         $data = array(
             'ID' => $project_id,
-            'post_status' => 'Complete'
+            'post_status' => 'complete'
+        );
+
+        wp_update_post( $data );
+    }
+
+    /**
+     * Change status of a project
+     *
+     * @param int $project_id
+     * @param string $project_status
+     */
+    function change_status( $project_id, $project_status ) {
+        do_action( 'cpm_project_change_status', $project_id, $project_status );
+
+        $data = array(
+            'ID' => $project_id,
+            'post_status' => $project_status
+        );
+
+        wp_update_post( $data );
+    }
+
+    /**
+     * Trash a project
+     *
+     * @param int $project_id
+     */
+    function trash( $project_id ) {
+        do_action( 'cpm_project_trash', $project_id );
+
+        $data = array(
+            'ID' => $project_id,
+            'post_status' => 'trash'
         );
 
         wp_update_post( $data );
@@ -141,16 +174,16 @@ class CPM_Project {
      */
     function get_projects( $count = -1, $status = 'publish' ) {
         global $wpdb;
-        $inbuilt_statuses = array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash');
 
-       if ( !in_array( $status, $inbuilt_statuses ) ) {
-            $projects = $wpdb->get_results( "SELECT * FROM $wpdb->posts WHERE post_status = '$status'" );
-       } else {
+        if ( in_array( $status, cpm_inbuilt_post_statuses( $status ) ) ) {
             $projects = get_posts( array(
                 'numberposts' => $count,
                 'post_type' => 'project',
                 'post_status' => $status
             ));
+        } else {
+            $sql = "SELECT * FROM $wpdb->posts WHERE post_status = '%s'";
+            $projects = $wpdb->get_results( sprintf( $sql, $status ) );
         }
 
         foreach ($projects as &$project) {
