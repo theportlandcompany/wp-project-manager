@@ -180,8 +180,6 @@
             changeStatus: function (e) {
                 e.preventDefault();
 
-                console.log('test');
-
                 var self = $(this),
                     data = {
                         project_id: self.attr('data-id'),
@@ -390,7 +388,6 @@
                         '_wpnonce': CPM_Vars.nonce
                     };
 
-                //console.log(data);
                 $.post(CPM_Vars.ajaxurl, data, function(res) {
                     res = $.parseJSON(res);
 
@@ -508,7 +505,6 @@
                     res = $.parseJSON(res);
 
                     if( res.success ) {
-                        console.log(parent);
                         parent.find('.cpm-entry-detail').html(res.content).fadeIn().next('.cpm-msg-edit-form').html('');
                     }
 
