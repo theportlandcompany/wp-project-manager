@@ -6,7 +6,12 @@
             $( "a#cpm-create-project" ).on('click', this.Project.openDialog);
             $( "#cpm-project-dialog" ).on('click', 'a.project-cancel', this.Project.closeDialog);
             $( "a.cpm-project-delete-link" ).on('click', this.Project.remove);
-            $( "a.cpm-project-complete-link" ).on('click', this.Project.done);
+            $( "a.cpm-project-publish-link" ).on('click', this.Project.changeStatus);
+            $( "a.cpm-project-complete-link" ).on('click', this.Project.changeStatus);
+            $( "a.cpm-project-draft-link").on('click', this.Project.changeStatus);
+            $( "a.cpm-project-pending-link").on('click', this.Project.changeStatus);
+            $( "a.cpm-project-archive-link").on('click', this.Project.changeStatus);
+            $( "a.cpm-project-trash-link" ).on('click', this.Project.changeStatus);
             $( "#cpm-project-dialog" ).on('submit', 'form.cpm-project-form', this.Project.create);
 
             $('.cpm-edit-project').on('submit', 'form.cpm-project-form', this.Project.edit);
@@ -173,13 +178,14 @@
 
             },
 
-            done: function (e) {
+            changeStatus: function (e) {
                 e.preventDefault();
 
                 var self = $(this),
                     data = {
                         project_id: self.attr('data-id'),
-                        action: 'cpm_project_complete',
+                        project_status: self.attr('data-status'),
+                        action: 'cpm_project_change_status',
                         _wpnonce: CPM_Vars.nonce
                     };
 
@@ -383,7 +389,6 @@
                         '_wpnonce': CPM_Vars.nonce
                     };
 
-                //console.log(data);
                 $.post(CPM_Vars.ajaxurl, data, function(res) {
                     res = $.parseJSON(res);
 
@@ -501,7 +506,6 @@
                     res = $.parseJSON(res);
 
                     if( res.success ) {
-                        console.log(parent);
                         parent.find('.cpm-entry-detail').html(res.content).fadeIn().next('.cpm-msg-edit-form').html('');
                     }
 

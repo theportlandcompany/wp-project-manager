@@ -9,7 +9,14 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects('', $_GET['
         <a href="#" id="cpm-create-project" class="add-new-h2"><?php _e( 'Add New', 'cpm' ); ?></a> 
     <?php } ?> 
 </h2>
-
+<ul class="subsubsub">
+    <li><a class="tab <?php echo !isset( $_GET['post_status']) ? 'current' : ''; ?>" href="<?php echo cpm_url_projects(); ?>"><?php _e( 'Published', 'cpm' ); ?></a> |</li>
+    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'complete' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('complete'); ?>"><?php _e( 'Completed', 'cpm' ); ?></a> |</li>
+    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'draft' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('draft'); ?>"><?php _e( 'Drafts', 'cpm' ); ?></a> |</li>
+    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'pending' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('pending'); ?>"><?php _e( 'Pending', 'cpm' ); ?></a> |</li>
+    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'archive' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('archive'); ?>"><?php _e( 'Archived', 'cpm' ); ?></a> |</li>
+    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'trash' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('trash'); ?>"><?php _e( 'Trash', 'cpm' ); ?></a></li>
+</ul>
 <div class="cpm-projects">
 
     <table class="wp-list-table widefat fixed posts" cellspacing="0">
@@ -35,10 +42,34 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects('', $_GET['
                     
                     <td class="post-title page-title column-title"><strong><a class="row-title" href="<?php echo cpm_url_project_details( $project->ID ); ?>" title="Details of &#8220;<?php echo get_the_title( $project->ID ); ?>&#8221;"><?php echo get_the_title( $project->ID ); ?></a></strong>
                         <div class="row-actions">
-                            <span class='edit'><a href="#link-for-edit" title="Edit this item">Edit</a> | </span>
-                            <span class='inline hide-if-no-js'><a href="#" class="editinline" title="Edit this item inline">Quick&nbsp;Edit</a> | </span>
-                            <span class='complete'><a class='cpm-project-complete-link' title='Complete this item' data-id="<?php echo $project->ID ?>" href='#complete-action'>Complete</a> | </span>
-                            <span class='trash'><a class='cpm-project-delete-link' title='Move this item to the Trash' data-id="<?php echo $project->ID ?>" href='#move-to-trash-action'>Trash</a> | </span>
+                            <span class='edit'><a href="#link-for-edit" title="Edit this item">Edit</a></span>
+                            <?php if ( isset( $_GET['post_status']) ): ?>
+                            <span class='publish'> | <a class='cpm-project-publish-link' title='Publish this project' data-status="publish" data-id="<?php echo $project->ID ?>" href='#publish-action'>Publish</a></span>
+                            <?php endif; ?>
+
+                            <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] != 'complete' &&  $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'archive' ): ?>
+                            <span class='complete'> | <a class='cpm-project-complete-link' title='Complete this project' data-status="complete" data-id="<?php echo $project->ID ?>" href='#complete-action'>Complete</a></span>
+                            <?php endif; ?>
+
+                            <?php if ( $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'complete' && $_GET['post_status'] != 'archive' && $_GET['post_status'] != 'pending' ): ?>
+                            <span class='draft'> | <a class='cpm-project-draft-link' title='Set this project as Draft' data-status="draft" data-id="<?php echo $project->ID ?>" href='#draft-action'>Draft</a></span>
+                            <?php endif; ?>
+
+                            <?php if ( $_GET['post_status'] != 'pending' && $_GET['post_status'] != 'complete' && $_GET['post_status'] != 'archive' && $_GET['post_status'] != 'draft' ): ?>
+                            <span class='pending'> | <a class='cpm-project-pending-link' title='Set this project as Pending' data-status="pending" data-id="<?php echo $project->ID ?>" href='#pending-action'>Pending</a></span>
+                            <?php endif; ?>
+
+                            <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] != 'archive' &&  $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'pending' ): ?>
+                            <span class='archive'> | <a class='cpm-project-archive-link' title='Move this project to Archive' data-status="archive" data-id="<?php echo $project->ID ?>" href='#archive-action'>Archive</a></span>
+                            <?php endif; ?>
+
+                            <?php if ( !isset( $_GET['post_status']) || $_GET['post_status'] != 'trash' ): ?>
+                            <span class='trash'> | <a class='cpm-project-trash-link' title='Move this project to the Trash' data-status="trash" data-id="<?php echo $project->ID ?>" href='#move-to-trash-action'>Trash</a></span>
+                            <?php endif; ?>
+
+                            <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] == 'trash' ): ?>
+                            <span class='delete'> | <a class='cpm-project-delete-link submitdelete' title='Delete this project permanently' data-id="<?php echo $project->ID ?>" href='#delete-action'>Delete Permanently</a></span>
+                            <?php endif; ?>
                         </div>
                     
                     </td>           

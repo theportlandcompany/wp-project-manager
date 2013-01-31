@@ -18,6 +18,8 @@ class CPM_Ajax {
         add_action( 'wp_ajax_cpm_project_update', array($this, 'project_edit') );
         add_action( 'wp_ajax_cpm_project_delete', array($this, 'project_delete') );
         add_action( 'wp_ajax_cpm_project_complete', array($this, 'project_complete') );
+        add_action( 'wp_ajax_cpm_project_change_status', array($this, 'project_change_status') );
+        add_action( 'wp_ajax_cpm_project_trash', array($this, 'project_trash') );
 
         add_action( 'wp_ajax_cpm_task_complete', array($this, 'mark_task_complete') );
         add_action( 'wp_ajax_cpm_task_open', array($this, 'mark_task_open') );
@@ -107,15 +109,16 @@ class CPM_Ajax {
         exit;
     }
 
-    function project_complete() {
+    function project_change_status() {
         $posted = $_POST;
 
         $project_id = isset( $posted['project_id'] ) ? intval( $posted['project_id'] ) : 0;
-        CPM_Project::getInstance()->complete( $project_id );
+        $project_status = isset( $posted['project_status'] ) && cpm_validate_post_status( $posted['project_status'] ) ? $posted['project_status'] : 'publish';
+        CPM_Project::getInstance()->change_status( $project_id, $project_status );
 
         echo json_encode( array(
             'success' => true,
-            'url' => cpm_url_completed_projects()
+            'url' => cpm_url_projects_with_status( $project_status )
         ) );
 
         exit;
