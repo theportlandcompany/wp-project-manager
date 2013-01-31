@@ -6,6 +6,7 @@
             $( "a#cpm-create-project" ).on('click', this.Project.openDialog);
             $( "#cpm-project-dialog" ).on('click', 'a.project-cancel', this.Project.closeDialog);
             $( "a.cpm-project-delete-link" ).on('click', this.Project.remove);
+            $( "a.cpm-project-publish-link" ).on('click', this.Project.changeStatus);
             $( "a.cpm-project-complete-link" ).on('click', this.Project.changeStatus);
             $( "a.cpm-project-draft-link").on('click', this.Project.changeStatus);
             $( "a.cpm-project-pending-link").on('click', this.Project.changeStatus);
