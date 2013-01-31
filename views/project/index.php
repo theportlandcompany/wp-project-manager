@@ -10,9 +10,12 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects('', $_GET['
     <?php } ?> 
 </h2>
 <ul class="subsubsub">
-    <li><a href="<?php echo cpm_url_projects(); ?>"><?php _e( 'Incomplete', 'cpm' ); ?></a> |</li>
-    <li><a href="<?php echo cpm_url_completed_projects(); ?>"><?php _e( 'Completed', 'cpm' ); ?></a> |</li>
-    <li><a href="<?php echo cpm_url_trashed_projects(); ?>"><?php _e( 'Trash', 'cpm' ); ?></a></li>
+    <li><a href="<?php echo cpm_url_projects(); ?>"><?php _e( 'Published', 'cpm' ); ?></a> |</li>
+    <li><a href="<?php echo cpm_url_projects_with_status('complete'); ?>"><?php _e( 'Completed', 'cpm' ); ?></a> |</li>
+    <li><a href="<?php echo cpm_url_projects_with_status('draft'); ?>"><?php _e( 'Drafts', 'cpm' ); ?></a> |</li>
+    <li><a href="<?php echo cpm_url_projects_with_status('pending'); ?>"><?php _e( 'Pending', 'cpm' ); ?></a> |</li>
+    <li><a href="<?php echo cpm_url_projects_with_status('archive'); ?>"><?php _e( 'Archived', 'cpm' ); ?></a> |</li>
+    <li><a href="<?php echo cpm_url_projects_with_status('trash'); ?>"><?php _e( 'Trash', 'cpm' ); ?></a></li>
 </ul>
 <div class="cpm-projects">
 
@@ -39,10 +42,17 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects('', $_GET['
                     
                     <td class="post-title page-title column-title"><strong><a class="row-title" href="<?php echo cpm_url_project_details( $project->ID ); ?>" title="Details of &#8220;<?php echo get_the_title( $project->ID ); ?>&#8221;"><?php echo get_the_title( $project->ID ); ?></a></strong>
                         <div class="row-actions">
-                            <span class='edit'><a href="#link-for-edit" title="Edit this item">Edit</a> | </span>
-                            <span class='complete'><a class='cpm-project-complete-link' title='Complete this project' data-id="<?php echo $project->ID ?>" href='#complete-action'>Complete</a> | </span>
-                            <span class='trash'><a class='cpm-project-trash-link' title='Move this project to the Trash' data-id="<?php echo $project->ID ?>" href='#move-to-trash-action'>Trash</a> | </span>
-                            <span class='delete'><a class='cpm-project-delete-link submitdelete' title='Delete this project permanently' data-id="<?php echo $project->ID ?>" href='#delete-action'>Delete Permanently</a></span>
+                            <span class='edit'><a href="#link-for-edit" title="Edit this item">Edit</a></span>
+                            <span class='complete'> | <a class='cpm-project-complete-link' title='Complete this project' data-status="complete" data-id="<?php echo $project->ID ?>" href='#complete-action'>Complete</a></span>
+                            <span class='draft'> | <a class='cpm-project-draft-link' title='Set this project as Draft' data-status="draft" data-id="<?php echo $project->ID ?>" href='#draft-action'>Draft</a></span>
+                            <span class='pending'> | <a class='cpm-project-pending-link' title='Set this project as Pending' data-status="pending" data-id="<?php echo $project->ID ?>" href='#pending-action'>Pending</a></span>
+                            <span class='archive'> | <a class='cpm-project-archive-link' title='Move this project to Archive' data-status="archive" data-id="<?php echo $project->ID ?>" href='#archive-action'>Archive</a></span>
+                            <?php if ( !isset( $_GET['post_status']) || $_GET['post_status'] != 'trash' ): ?>
+                            <span class='trash'> | <a class='cpm-project-trash-link' title='Move this project to the Trash' data-status="trash" data-id="<?php echo $project->ID ?>" href='#move-to-trash-action'>Trash</a></span>
+                            <?php endif; ?>
+                            <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] == 'trash' ): ?>
+                            <span class='delete'> | <a class='cpm-project-delete-link submitdelete' title='Delete this project permanently' data-id="<?php echo $project->ID ?>" href='#delete-action'>Delete Permanently</a></span>
+                            <?php endif; ?>
                         </div>
                     
                     </td>           

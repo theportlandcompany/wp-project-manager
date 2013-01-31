@@ -6,8 +6,11 @@
             $( "a#cpm-create-project" ).on('click', this.Project.openDialog);
             $( "#cpm-project-dialog" ).on('click', 'a.project-cancel', this.Project.closeDialog);
             $( "a.cpm-project-delete-link" ).on('click', this.Project.remove);
-            $( "a.cpm-project-complete-link" ).on('click', this.Project.markComplete);
-            $( "a.cpm-project-trash-link" ).on('click', this.Project.trash);
+            $( "a.cpm-project-complete-link" ).on('click', this.Project.changeStatus);
+            $( "a.cpm-project-draft-link").on('click', this.Project.changeStatus);
+            $( "a.cpm-project-pending-link").on('click', this.Project.changeStatus);
+            $( "a.cpm-project-archive-link").on('click', this.Project.changeStatus);
+            $( "a.cpm-project-trash-link" ).on('click', this.Project.changeStatus);
             $( "#cpm-project-dialog" ).on('submit', 'form.cpm-project-form', this.Project.create);
 
             $('.cpm-edit-project').on('submit', 'form.cpm-project-form', this.Project.edit);
@@ -174,33 +177,16 @@
 
             },
 
-            markComplete: function (e) {
+            changeStatus: function (e) {
                 e.preventDefault();
+
+                console.log('test');
 
                 var self = $(this),
                     data = {
                         project_id: self.attr('data-id'),
-                        action: 'cpm_project_complete',
-                        _wpnonce: CPM_Vars.nonce
-                    };
-
-                $.post(CPM_Vars.ajaxurl, data, function(res) {
-                    res = $.parseJSON(res);
-
-                    if(res.success) {
-                        location.href = res.url;
-                    }
-                });
-
-            },
-
-            trash: function (e) {
-                e.preventDefault();
-
-                var self = $(this),
-                    data = {
-                        project_id: self.attr('data-id'),
-                        action: 'cpm_project_trash',
+                        project_status: self.attr('data-status'),
+                        action: 'cpm_project_change_status',
                         _wpnonce: CPM_Vars.nonce
                     };
 

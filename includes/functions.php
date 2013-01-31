@@ -411,6 +411,36 @@ function cpm_project_summary( $info ) {
     return implode(', ', $info_array );
 }
 
+
+/**
+ * Helper function for returning all post statuses including custom
+ */
+function cpm_all_post_statuses() {
+    $all_post_statuses = array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash', 'complete', 'archive' );
+
+    return $all_post_statuses;
+}
+
+/**
+ * Helper function for returning inbuilt wordpress post statuses
+ */
+function cpm_inbuilt_post_statuses(  ) {
+    $inbuilt_post_statuses = array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash' );
+
+    return $inbuilt_post_statuses;
+}
+
+/**
+ * Helper function for validating post status
+ */
+function cpm_validate_post_status( $project_status ) {
+    if ( in_array( htmlspecialchars( strip_tags( $project_status ) ) , cpm_all_post_statuses() ) ) {
+        return true;
+    }
+
+    return false;
+}
+
 /**
  * Serve project files with proxy
  *
