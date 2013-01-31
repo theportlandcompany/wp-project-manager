@@ -47,15 +47,15 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects('', $_GET['
                             <span class='publish'> | <a class='cpm-project-publish-link' title='Publish this project' data-status="publish" data-id="<?php echo $project->ID ?>" href='#publish-action'>Publish</a></span>
                             <?php endif; ?>
 
-                            <?php if ( $_GET['post_status'] != 'complete' &&  $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'pending' ): ?>
+                            <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] != 'complete' &&  $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'archive' ): ?>
                             <span class='complete'> | <a class='cpm-project-complete-link' title='Complete this project' data-status="complete" data-id="<?php echo $project->ID ?>" href='#complete-action'>Complete</a></span>
                             <?php endif; ?>
 
-                            <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] != 'draft' ): ?>
+                            <?php if ( $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'complete' && $_GET['post_status'] != 'archive' && $_GET['post_status'] != 'pending' ): ?>
                             <span class='draft'> | <a class='cpm-project-draft-link' title='Set this project as Draft' data-status="draft" data-id="<?php echo $project->ID ?>" href='#draft-action'>Draft</a></span>
                             <?php endif; ?>
 
-                            <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] != 'pending' ): ?>
+                            <?php if ( $_GET['post_status'] != 'pending' && $_GET['post_status'] != 'complete' && $_GET['post_status'] != 'archive' && $_GET['post_status'] != 'draft' ): ?>
                             <span class='pending'> | <a class='cpm-project-pending-link' title='Set this project as Pending' data-status="pending" data-id="<?php echo $project->ID ?>" href='#pending-action'>Pending</a></span>
                             <?php endif; ?>
 
