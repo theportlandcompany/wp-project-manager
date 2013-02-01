@@ -379,6 +379,47 @@ class CPM_Project {
     }
 
     /**
+     * Generates status navigation menu for projects
+     *
+     * @param int $project_id
+     * @return array
+     */
+    function status_nav_links( $project_id ) {
+        $links = array(
+            cpm_url_projects_with_status( 'publish' ) => __( 'Published', 'cpm' ),
+            cpm_url_projects_with_status( 'complete' ) => __( 'Completed', 'cpm' ),
+            cpm_url_projects_with_status( 'draft' ) => __( 'Drafts', 'cpm' ),
+            cpm_url_projects_with_status( 'pending' ) => __( 'Pending', 'cpm' ),
+            cpm_url_projects_with_status( 'archive' ) => __( 'Archived', 'cpm' ),
+            cpm_url_projects_with_status( 'trash' ) => __( 'Trash', 'cpm' ),
+        );
+
+        return apply_filters( 'cpm_project_status_nav_links', $links );
+    }
+
+    /**
+     * Prints status navigation menu for projects
+     *
+     * @param int $project_id
+     * @param string $active
+     * @return string
+     */
+    function status_nav_menu( $active = '' ) {
+        $links = $this->status_nav_links();
+
+        $menu = array();
+        foreach ($links as $url => $label) {
+            if ( $active == $label ) {
+                $menu[] = sprintf( '<a href="%1$s" class="nav-tab nav-tab-active" title="%2$s">%2$s</a>', $url, $label );
+            } else {
+                $menu[] = sprintf( '<a href="%1$s" class="nav-tab" title="%2$s">%2$s</a>', $url, $label );
+            }
+        }
+
+        return implode( "\n", $menu );
+    }
+
+    /**
      * Checks against admin rights
      *
      * editor and above level has admin rights by default

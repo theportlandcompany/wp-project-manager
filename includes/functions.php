@@ -325,6 +325,19 @@ function cpm_get_header( $active_menu, $project_id = 0 ) {
 }
 
 /**
+ * Helper function to include `status-nav.php`
+ *
+ * @since 0.1
+ * @param string $active_tab
+ */
+function cpm_get_status_nav_menu( $active_status_menu ) {
+    $cpm_active_status_menu = $active_status_menu;
+
+    require_once CPM_PLUGIN_PATH . '/views/project/status-nav.php';
+}
+
+
+/**
  * Displays comment texts. Mainly used for applying `comment_text` filter
  * on messages, tasks and to-do's comments.
  *
@@ -439,6 +452,45 @@ function cpm_validate_post_status( $project_status ) {
     }
 
     return false;
+}
+
+/**
+ * Helper function for mapping post status to its respective label for filter navigation
+ */
+function cpm_map_status( $project_status ) {
+    $status = '';
+
+    switch ( $project_status ) {
+        case 'publish':
+            $status = 'Published';
+            break;
+
+        case 'complete':
+            $status = 'Completed';
+            break;
+
+        case 'draft':
+            $status = 'Drafts';
+            break;
+
+        case 'pending':
+            $status = 'Pending';
+            break;
+
+        case 'archive':
+            $status = 'Archived';
+            break;
+
+        case 'trash':
+            $status = 'Trash';
+            break;
+
+        default:
+            $status = 'Published';
+            break;
+    }
+
+    return $status;
 }
 
 /**

@@ -1,6 +1,6 @@
 <?php
 $project_obj = CPM_Project::getInstance();
-$projects = isset($_GET['post_status']) ? $project_obj->get_projects(-1, $_GET['post_status']) : $project_obj->get_projects();
+$projects = isset( $_GET['post_status'] ) ? $project_obj->get_projects( -1, $_GET['post_status'] ) : $project_obj->get_projects();
 ?>
 
 <div class="icon32" id="icon-themes"><br></div>
@@ -9,15 +9,13 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects(-1, $_GET['
         <a href="#" id="cpm-create-project" class="add-new-h2"><?php _e( 'Add New', 'cpm' ); ?></a> 
     <?php } ?> 
 </h2>
-<ul class="subsubsub">
-    <li><a class="tab <?php echo !isset( $_GET['post_status']) ? 'current' : ''; ?>" href="<?php echo cpm_url_projects(); ?>"><?php _e( 'Published', 'cpm' ); ?></a> |</li>
-    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'complete' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('complete'); ?>"><?php _e( 'Completed', 'cpm' ); ?></a> |</li>
-    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'draft' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('draft'); ?>"><?php _e( 'Drafts', 'cpm' ); ?></a> |</li>
-    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'pending' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('pending'); ?>"><?php _e( 'Pending', 'cpm' ); ?></a> |</li>
-    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'archive' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('archive'); ?>"><?php _e( 'Archived', 'cpm' ); ?></a> |</li>
-    <li><a class="tab <?php echo isset( $_GET['post_status']) && $_GET['post_status'] == 'trash' ? 'current' : ''; ?>" href="<?php echo cpm_url_projects_with_status('trash'); ?>"><?php _e( 'Trash', 'cpm' ); ?></a></li>
-</ul>
+
 <div class="cpm-projects">
+
+    <?php $active_nav_menu = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'publish'; ?>
+    <?php cpm_get_status_nav_menu( __( cpm_map_status( $active_nav_menu ), 'cpm' ) ); ?>
+
+    <div id="">
 
     <table class="wp-list-table widefat fixed posts" cellspacing="0">
         <thead>
@@ -43,7 +41,7 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects(-1, $_GET['
                     <td class="project-title column-title"><strong><a class="row-title" href="<?php echo cpm_url_project_details( $project->ID ); ?>" title="Details of &#8220;<?php echo get_the_title( $project->ID ); ?>&#8221;"><?php echo get_the_title( $project->ID ); ?></a></strong>
                         <div class="row-actions">
                             <span class='quick-edit'><a a class='cpm-project-quick-edit-link' href="#link-for-quick-edit" title="Edit this item">Quick Edit</a></span>
-                            <?php if ( isset( $_GET['post_status']) ): ?>
+                            <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] != 'publish' ): ?>
                             <span class='publish'> | <a class='cpm-project-publish-link' title='Publish this project' data-status="publish" data-id="<?php echo $project->ID ?>" href='#publish-action'>Publish</a></span>
                             <?php endif; ?>
 
