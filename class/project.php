@@ -170,9 +170,10 @@ class CPM_Project {
      *
      * @param int $count
      * @param string $status
+     * @param int $user_id
      * @return object
      */
-    function get_projects( $count = -1, $status = 'publish' ) {
+    function get_projects( $count = -1, $status = 'publish', $user_id = 0 ) {
         global $wpdb;
 
         if ( in_array( $status, cpm_inbuilt_post_statuses( $status ) ) ) {
@@ -365,6 +366,47 @@ class CPM_Project {
      */
     function nav_menu( $project_id, $active = '' ) {
         $links = $this->nav_links( $project_id );
+
+        $menu = array();
+        foreach ($links as $url => $label) {
+            if ( $active == $label ) {
+                $menu[] = sprintf( '<a href="%1$s" class="nav-tab nav-tab-active" title="%2$s">%2$s</a>', $url, $label );
+            } else {
+                $menu[] = sprintf( '<a href="%1$s" class="nav-tab" title="%2$s">%2$s</a>', $url, $label );
+            }
+        }
+
+        return implode( "\n", $menu );
+    }
+
+    /**
+     * Generates status navigation menu for projects
+     *
+     * @param int $project_id
+     * @return array
+     */
+    function status_nav_links( $project_id ) {
+        $links = array(
+            cpm_url_projects_with_status( 'publish' ) => __( 'Published', 'cpm' ),
+            cpm_url_projects_with_status( 'complete' ) => __( 'Completed', 'cpm' ),
+            cpm_url_projects_with_status( 'draft' ) => __( 'Drafts', 'cpm' ),
+            cpm_url_projects_with_status( 'pending' ) => __( 'Pending', 'cpm' ),
+            cpm_url_projects_with_status( 'archive' ) => __( 'Archived', 'cpm' ),
+            cpm_url_projects_with_status( 'trash' ) => __( 'Trash', 'cpm' ),
+        );
+
+        return apply_filters( 'cpm_project_status_nav_links', $links );
+    }
+
+    /**
+     * Prints status navigation menu for projects
+     *
+     * @param int $project_id
+     * @param string $active
+     * @return string
+     */
+    function status_nav_menu( $active = '' ) {
+        $links = $this->status_nav_links();
 
         $menu = array();
         foreach ($links as $url => $label) {

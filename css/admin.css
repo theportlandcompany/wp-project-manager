@@ -54,9 +54,17 @@
   font-size: 18px;
   line-height: 20px;
 }
-.cpm .nav-tab.nav-tab-active {
+.nav-tab.nav-tab-active {
   color: #000;
 }
+.cpm-projects .nav-tab.nav-tab-active {
+  border-color: #dfdfdf;
+  background-color: #F9F9F9;
+  border-bottom: 1px solid #F9F9F9;
+}
+.cpm-projects .nav-tab-wrapper {
+  border-bottom: none;
+} 
 .cpm textarea,
 .cpm input[type=text] {
   padding: 5px 10px;
@@ -214,6 +222,17 @@ ul.cpm-attachments li {
   margin: 0 10px 10px 0;
   vertical-align: top;
 }
+.cpm-projects thead > tr > th {
+  border-top: 1px solid #F9F9F9;
+}
+.cpm-projects .wp-list-table {
+  -webkit-border-radius: 3px;
+  -webkit-border-top-left-radius: 0;
+  -moz-border-radius: 3px;
+  -moz-border-radius-topleft: 0;
+  border-radius: 3px;
+  border-top-left-radius: 0;
+}
 /*--------------------------------------------------
 :: Form
 -------------------------------------------------- */
@@ -365,6 +384,14 @@ ul.cpm-nav li a {
   margin-top: 15px;
   position: relative;
 }
+.cpm-projects .cpm-quick-edit-project {
+  display: none
+}
+.cpm-projects .cpm-quick-edit-project {
+  background-color: #F5F5F5;
+  border-top: none;
+  margin-top: 15px;
+}
 ul.cpm-activity {
   font-size: 13px;
 }
@@ -393,8 +420,8 @@ ul.cpm-activity ul li:before {
   left: -5px;
 }
 .cpm-projects {
-  margin-top: 10px;
-  padding: 5px 0 0 5px;
+  margin-top: 0;
+  padding: 0;
   display: block;
 }
 .cpm-projects nav.cpm-new-project {
@@ -645,10 +672,6 @@ ul.cpm-activity ul li:before {
 .cpm-comment-wrap li.cpm-comment .cpm-comment-container p {
   margin: 5px 0 10px 0;
 }
-.cpm-comment-wrap li.cpm-comment .cpm-comment-container .cpm-comment-edit-form .cpm-comment-form-wrap {
-  margin-left: 0;
-  margin-top: 10px;
-}
 .cpm-comment-wrap li.cpm-comment .cpm-upload-container {
   background: #fff;
   padding: 10px;
@@ -662,6 +685,7 @@ ul.cpm-activity ul li:before {
   padding: 10px;
   margin-left: 75px;
   width: 500px;
+  margin-top: 25px;
 }
 .cpm-comment-form-wrap .cpm-avatar {
   position: absolute;

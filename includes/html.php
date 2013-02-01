@@ -728,7 +728,7 @@ function cpm_project_form( $project = null ) {
             <input type="hidden" name="project_notify" value="no" />
             <label>
                 <input type="checkbox" name="project_notify" id="project-notify" value="yes" />
-                <?php _e( 'Notify Co-workers', 'cpm' ) ?>
+                <?php _e( 'Notify Contributors', 'cpm' ) ?>
             </label>
         </div>
 
