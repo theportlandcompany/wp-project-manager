@@ -365,6 +365,14 @@ ul.cpm-nav li a {
   margin-top: 15px;
   position: relative;
 }
+.cpm-projects .cpm-quick-edit-project {
+  display: none
+}
+.cpm-projects .cpm-quick-edit-project {
+  background-color: #F5F5F5;
+  border-top: none;
+  margin-top: 15px;
+}
 ul.cpm-activity {
   font-size: 13px;
 }

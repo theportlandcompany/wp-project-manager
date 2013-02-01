@@ -79,7 +79,7 @@ function cpm_dropdown_users( $selected = array() ) {
         }
     }
 
-    $dropdown = '<select name="project_coworker[]" id="project_coworker" placeholder="' . $placeholder . '" multiple="multiple">';
+    $dropdown = '<select name="project_coworker[]" class="project_coworker" placeholder="' . $placeholder . '" multiple="multiple">';
     $dropdown .= implode("\n", $options );
     $dropdown .= '</select>';
 

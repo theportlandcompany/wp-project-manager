@@ -5,14 +5,18 @@
 
             $( "a#cpm-create-project" ).on('click', this.Project.openDialog);
             $( "#cpm-project-dialog" ).on('click', 'a.project-cancel', this.Project.closeDialog);
-            $( "a.cpm-project-delete-link" ).on('click', this.Project.remove);
             $( "a.cpm-project-publish-link" ).on('click', this.Project.changeStatus);
             $( "a.cpm-project-complete-link" ).on('click', this.Project.changeStatus);
             $( "a.cpm-project-draft-link").on('click', this.Project.changeStatus);
             $( "a.cpm-project-pending-link").on('click', this.Project.changeStatus);
             $( "a.cpm-project-archive-link").on('click', this.Project.changeStatus);
             $( "a.cpm-project-trash-link" ).on('click', this.Project.changeStatus);
+            $( "a.cpm-project-delete-link" ).on('click', this.Project.remove);
             $( "#cpm-project-dialog" ).on('submit', 'form.cpm-project-form', this.Project.create);
+
+            $( "a.cpm-project-quick-edit-link" ).on('click', this.Project.showQuickEditForm);
+            $('a.project-cancel').on('click', this.Project.hideQuickEditForm);
+            $('.cpm-projects').on('submit', 'form.cpm-project-form', this.Project.quickEdit);
 
             $('.cpm-edit-project').on('submit', 'form.cpm-project-form', this.Project.edit);
             $('.cpm-project-head').on('click', 'a.cpm-icon-edit', this.Project.toggleEditForm);
@@ -118,12 +122,32 @@
             },
 
             toggleEditForm: function (e) {
+
                 e.preventDefault();
 
                 var container = $(this).closest('.cpm-project-head');
 
                 container.find('.cpm-edit-project').slideToggle();
                 container.find('.cpm-project-detail').slideToggle();
+            },
+
+            showQuickEditForm: function (e) {
+                e.preventDefault();
+
+                var container = $(this).closest('tr').next();
+
+                container.prev(':hidden').fadeIn(200);
+                container.siblings().find('.cpm-quick-edit-project:visible').slideUp(function(){
+                    $(this).closest('tr').hide();
+                });
+                container.show().find('.cpm-quick-edit-project').slideDown();
+            },
+
+            hideQuickEditForm: function (e) {
+                e.preventDefault();
+
+                $(this).parents('.cpm-quick-edit-project').slideToggle();
+                $(this).parents('tr').prev().fadeIn(200);
             },
 
             edit: function (e) {
@@ -146,7 +170,37 @@
                         container.find('.cpm-project-detail').slideToggle();
 
                         //re-initialize chosen dropdown
-                        $('#project_coworker').chosen();
+                        $('.project_coworker').chosen();
+                    }
+                });
+
+                $('.cpm-loading').remove();
+            },
+
+            quickEdit: function (e) {
+                e.preventDefault();
+
+                var form = $(this),
+                    container = $(this).closest('tr').prev('.project-item');
+                    data = form.serialize();   
+
+                console.log(data);
+
+                form.append('<div class="cpm-loading">Saving...</div>');
+                $.post(CPM_Vars.ajaxurl, data, function (res) {
+                    res = $.parseJSON(res);
+
+                    if(res.success) {
+                        container.find('.row-title').text(res.title);
+                        form.find('.project-users').html(res.users);
+
+                        form.closest('.cpm-quick-edit-project').slideUp(function(){
+                            $(this).closest('tr').hide();
+                        });
+                        form.closest('tr').prev().fadeIn(200);
+
+                        //re-initialize chosen dropdown
+                        $('.project_coworker').chosen();
                     }
                 });
 
@@ -576,7 +630,7 @@
     $(function() {
         weDevs_CPM.init();
 
-        $('#project_coworker').chosen();
+        $('.project_coworker').chosen();
         $(".datepicker").datepicker();
     });
 

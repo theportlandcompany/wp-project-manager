@@ -34,15 +34,15 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects(-1, $_GET['
                 }
                 ?>
 
-                <tr id="post-<?php echo $project->ID; ?>" class="post-<?php echo $project->ID; ?> type-project" valign="top">
+                <tr id="post-<?php echo $project->ID; ?>" class="post-<?php echo $project->ID; ?> type-project project-item" valign="top">
                     <th scope="row" class="check-column">
                         <label class="screen-reader-text" for="cb-select-<?php echo $project->ID; ?>"><?php echo get_the_title( $project->ID ); ?></label>
                         <input id="cb-select-<?php echo $project->ID; ?>" type="checkbox" name="post[]" value="<?php echo $project->ID; ?>" />
                     </th>
                     
-                    <td class="post-title page-title column-title"><strong><a class="row-title" href="<?php echo cpm_url_project_details( $project->ID ); ?>" title="Details of &#8220;<?php echo get_the_title( $project->ID ); ?>&#8221;"><?php echo get_the_title( $project->ID ); ?></a></strong>
+                    <td class="project-title column-title"><strong><a class="row-title" href="<?php echo cpm_url_project_details( $project->ID ); ?>" title="Details of &#8220;<?php echo get_the_title( $project->ID ); ?>&#8221;"><?php echo get_the_title( $project->ID ); ?></a></strong>
                         <div class="row-actions">
-                            <span class='edit'><a href="#link-for-edit" title="Edit this item">Edit</a></span>
+                            <span class='quick-edit'><a a class='cpm-project-quick-edit-link' href="#link-for-quick-edit" title="Edit this item">Quick Edit</a></span>
                             <?php if ( isset( $_GET['post_status']) ): ?>
                             <span class='publish'> | <a class='cpm-project-publish-link' title='Publish this project' data-status="publish" data-id="<?php echo $project->ID ?>" href='#publish-action'>Publish</a></span>
                             <?php endif; ?>
@@ -71,15 +71,20 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects(-1, $_GET['
                             <span class='delete'> | <a class='cpm-project-delete-link submitdelete' title='Delete this project permanently' data-id="<?php echo $project->ID ?>" href='#delete-action'>Delete Permanently</a></span>
                             <?php endif; ?>
                         </div>
-                    
                     </td>           
                     <td class="author column-author"><a href="#author-filter"><?php echo $project->users[0]; ?></a></td>       
                     <td class="comments column-comments">
                         <div class="post-com-count-wrapper"><a href='#link-to-comments' title='Post Count' class='post-com-count'><span class='comment-count'>[count]</span></a></div>
                     </td>
-                    <td class="date column-date"><abbr title="date">[created]</abbr><br />[published]</td>      
+                    <td class="date column-date"><abbr title="date">[created]</abbr><br />[published]</td>    
                 </tr>
-
+                <tr class="inline-edit-row inline-edit-row-project inline-edit-project quick-edit-row quick-edit-row-project inline-edit-project alternate inline-editor">
+                    <td colspan="5" class="colspanchange cpm-quick-edit-project">
+                        <div class="cpm-quick-edit-project">
+                            <?php cpm_project_form( $project ); ?>
+                        </div>
+                    </td>  
+                </tr>
             <?php } ?>
 
         </tbody>
