@@ -170,9 +170,10 @@ class CPM_Project {
      *
      * @param int $count
      * @param string $status
+     * @param int $user_id
      * @return object
      */
-    function get_projects( $count = -1, $status = 'publish' ) {
+    function get_projects( $count = -1, $status = 'publish', $user_id = 0 ) {
         global $wpdb;
 
         if ( in_array( $status, cpm_inbuilt_post_statuses( $status ) ) ) {
