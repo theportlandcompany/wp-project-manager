@@ -146,8 +146,10 @@
             hideQuickEditForm: function (e) {
                 e.preventDefault();
 
-                $(this).parents('.cpm-quick-edit-project').slideToggle();
-                $(this).parents('tr').prev().fadeIn(200);
+                $(this).closest('.cpm-quick-edit-project').slideUp(function(){
+                    $(this).closest('tr').hide();
+                });
+                $(this).closest('tr').prev().fadeIn(200);
             },
 
             edit: function (e) {
