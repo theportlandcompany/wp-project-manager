@@ -59,7 +59,7 @@ $projects = isset($_GET['post_status']) ? $project_obj->get_projects('', $_GET['
                             <span class='pending'> | <a class='cpm-project-pending-link' title='Set this project as Pending' data-status="pending" data-id="<?php echo $project->ID ?>" href='#pending-action'>Pending</a></span>
                             <?php endif; ?>
 
-                            <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] != 'archive' &&  $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'pending' ): ?>
+                            <?php if ( $_GET['post_status'] != 'archive' &&  $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'pending' ): ?>
                             <span class='archive'> | <a class='cpm-project-archive-link' title='Move this project to Archive' data-status="archive" data-id="<?php echo $project->ID ?>" href='#archive-action'>Archive</a></span>
                             <?php endif; ?>
 
