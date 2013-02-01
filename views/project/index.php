@@ -1,6 +1,6 @@
 <?php
 $project_obj = CPM_Project::getInstance();
-$projects = isset($_GET['post_status']) ? $project_obj->get_projects('', $_GET['post_status']) : $project_obj->get_projects();
+$projects = isset($_GET['post_status']) ? $project_obj->get_projects(-1, $_GET['post_status']) : $project_obj->get_projects();
 ?>
 
 <div class="icon32" id="icon-themes"><br></div>
