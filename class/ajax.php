@@ -64,7 +64,6 @@ class CPM_Ajax {
             exit;
         }
 
-
         $project_id = $pro_obj->create();
         $project = $pro_obj->get( $project_id );
 

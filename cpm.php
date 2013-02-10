@@ -68,6 +68,8 @@ class WeDevs_CPM {
      */
     function install() {
         update_option( 'cpm_version', $this->version );
+        // Create Project Co-workers table 
+        include_once dirname( __FILE__ ) . '/includes/db.php';
     }
 
     /**
@@ -109,7 +111,6 @@ class WeDevs_CPM {
         wp_enqueue_script( 'plupload-handlers' );
         wp_enqueue_script( 'cpm_admin', plugins_url( 'js/admin.js', __FILE__ ) );
         wp_enqueue_script( 'cpm_task', plugins_url( 'js/task.js', __FILE__ ) );
-        wp_enqueue_script( 'cpm_misc', plugins_url( 'js/misc.js', __FILE__ ) );
         wp_enqueue_script( 'cpm_uploader', plugins_url( 'js/upload.js', __FILE__ ), array('jquery', 'plupload-handlers') );
 
         wp_localize_script( 'cpm_admin', 'CPM_Vars', array(
@@ -270,19 +271,3 @@ class WeDevs_CPM {
 }
 
 $GLOBALS['wedevs_cpm'] = new WeDevs_CPM();
-
-/**
- * Add filters for text displays on Project Manager texts
- * 
- * @since 0.3.2
- */
-function cpm_content_filter() {
-    add_filter( 'cpm_get_content', 'wptexturize' );
-    add_filter( 'cpm_get_content', 'convert_smilies' );
-    add_filter( 'cpm_get_content', 'convert_chars' );
-    add_filter( 'cpm_get_content', 'wpautop' );
-    add_filter( 'cpm_get_content', 'shortcode_unautop' );
-    add_filter( 'cpm_get_content', 'prepend_attachment' );
-}
-
-add_action( 'plugins_loaded', 'cpm_content_filter' );

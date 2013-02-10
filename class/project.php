@@ -63,6 +63,7 @@ class CPM_Project {
      * @return int
      */
     function create( $project_id = 0 ) {
+        global $wpdb;
         $posted = $_POST;
         $is_update = ( $project_id ) ? true : false;
         $co_worker = isset( $posted['project_coworker'] ) ? $posted['project_coworker'] : '';
@@ -82,7 +83,17 @@ class CPM_Project {
         }
 
         if ( $project_id ) {
-            update_post_meta( $project_id, '_coworker', $co_worker );
+            $co_worker_old = wp_list_pluck( $this->get_users( $project_id ), 'id' );
+            $remove_user = array_diff( $co_worker_old, $co_worker );
+            $add_user = array_diff( $co_worker, $co_worker_old );
+
+            if ( $remove_user ) {
+                $this->remove_co_worker( $remove_user, $project_id );
+            }
+
+            if ( $add_user || !$co_worker ) {
+                $this->add_co_worker( $add_user, $project_id );
+            }  
 
             if ( $is_update ) {
                 do_action( 'cpm_project_update', $project_id, $data );
@@ -170,24 +181,25 @@ class CPM_Project {
      *
      * @param int $count
      * @param string $status
-     * @param int $user_id
+     * @param int $user_id 
      * @return object
      */
-    function get_projects( $count = -1, $status = 'publish', $user_id = 0 ) {
+    function get_projects( $count = -1, $status = 'publish', $user_id = 1 ) {
         global $wpdb;
 
-        if ( in_array( $status, cpm_inbuilt_post_statuses( $status ) ) ) {
-            $projects = get_posts( array(
-                'numberposts' => $count,
-                'post_type' => 'project',
-                'post_status' => $status
-            ));
-        } else {
-            $sql = "SELECT * FROM $wpdb->posts WHERE post_status = '%s'";
-            $projects = $wpdb->get_results( sprintf( $sql, $status ) );
+        $project_coworkers_table = $wpdb->prefix . 'project_coworkers';
+        $sql = "SELECT * FROM $project_coworkers_table";
+        $sql .= " INNER JOIN $wpdb->posts ON $project_coworkers_table.project_id = $wpdb->posts.ID";
+        $sql .= " WHERE $wpdb->posts.post_type = 'project'";
+        $sql .= " AND $wpdb->posts.post_status = '%s'";
+        if ( $user_id != 1 ) {
+            $sql .= " AND $project_coworkers_table.user_id = '%d'";
         }
+        $sql .= " GROUP BY $wpdb->posts.ID";
 
-        foreach ($projects as &$project) {
+        $projects = $wpdb->get_results( sprintf( $sql, $status, $user_id ) );
+
+        foreach ( $projects as &$project ) {
             $project->info = $this->get_info( $project->ID );
             $project->users = $this->get_users( $project );
         }
@@ -305,6 +317,7 @@ class CPM_Project {
      * @return array user emails with id as index
      */
     function get_users( $project ) {
+        global $wpdb;
 
         if ( is_object( $project ) ) {
             $project_id = $project->ID;
@@ -312,14 +325,12 @@ class CPM_Project {
             $project_id = $project;
         }
 
-        $mail = array();
-        $user_ids = array(get_post_field( 'post_author', $project_id ));
-        $co_worker = get_post_meta( $project_id, '_coworker', true );
+        $project_coworkers_table = $wpdb->prefix . 'project_coworkers';
+        $sql = "SELECT user_id FROM $project_coworkers_table";
+        $sql .= " WHERE `project_id` = '%d'";
 
-        //if any co-workers found, add them
-        if ( $co_worker != '' ) {
-            $user_ids = array_merge( $user_ids, $co_worker );
-        }
+        $user_ids = $wpdb->get_col( sprintf( $sql, $project_id ) );
+        $mail = array();
 
         //insert the mail addresses in array, user id as key
         if ( $user_ids ) {
@@ -337,6 +348,50 @@ class CPM_Project {
         }
 
         return $mail;
+    }
+
+    /**
+     * Add co worker(s)
+     *
+     * @since 0.3.1
+     * @param array $co_worker
+     * @param int $project_id
+     */
+    function add_co_worker( $co_worker, $project_id ) {
+        global $wpdb;
+        $project_coworkers_table = $wpdb->prefix . 'project_coworkers';
+        $sql = "INSERT INTO $project_coworkers_table ( project_id, user_id ) VALUES ( %d, %d ) ";
+
+        // Always add Admin if it's not present
+        if ( !in_array( 1, $co_worker ) ) {
+            $co_worker[] = 1;
+        }
+
+        foreach ( $co_worker as $user_id ) {
+            $wpdb->query( $wpdb->prepare( $sql, $project_id, $user_id ) );
+        }
+    }
+
+    /**
+     * Remove co worker(s)
+     *
+     * @since 0.3.1
+     * @param array $co_worker
+     * @param int $project_id
+     */
+    function remove_co_worker( $co_worker, $project_id ) {
+        global $wpdb;
+        $project_coworkers_table = $wpdb->prefix . 'project_coworkers';
+        $sql = "DELETE FROM $project_coworkers_table WHERE `project_id` = '%d' AND `user_id` = '%d'";
+
+        // Prevent Admin from being removed
+        if ( in_array( 1, $co_worker ) ) {
+            $co_worker = array_diff( $co_worker, array( 1 ) );
+        }
+
+        foreach ( $co_worker as $user_id ) {
+            $wpdb->query( $wpdb->prepare( $sql, $project_id, $user_id ) );
+        }
     }
 
     /**
@@ -385,7 +440,7 @@ class CPM_Project {
      * @param int $project_id
      * @return array
      */
-    function status_nav_links( $project_id ) {
+    function status_nav_links() {
         $links = array(
             cpm_url_projects_with_status( 'publish' ) => __( 'Published', 'cpm' ),
             cpm_url_projects_with_status( 'complete' ) => __( 'Completed', 'cpm' ),

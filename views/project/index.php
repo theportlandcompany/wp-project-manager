@@ -1,6 +1,8 @@
 <?php
 $project_obj = CPM_Project::getInstance();
-$projects = isset( $_GET['post_status'] ) ? $project_obj->get_projects( -1, $_GET['post_status'] ) : $project_obj->get_projects();
+$post_status = isset($_GET['post_status'] ) ? $_GET['post_status'] : 'publish';
+$current_user_id = get_current_user_id() == 0 ? 1 : get_current_user_id();
+$projects = $project_obj->get_projects( -1, $post_status, $current_user_id );
 ?>
 
 <div class="icon32" id="icon-themes"><br></div>
@@ -34,11 +36,11 @@ $projects = isset( $_GET['post_status'] ) ? $project_obj->get_projects( -1, $_GE
 
                 <tr id="post-<?php echo $project->ID; ?>" class="post-<?php echo $project->ID; ?> type-project project-item" valign="top">
                     <th scope="row" class="check-column">
-                        <label class="screen-reader-text" for="cb-select-<?php echo $project->ID; ?>"><?php echo get_the_title( $project->ID ); ?></label>
+                        <label class="screen-reader-text" for="cb-select-<?php echo $project->ID; ?>"><?php echo $project->post_title; ?></label>
                         <input id="cb-select-<?php echo $project->ID; ?>" type="checkbox" name="post[]" value="<?php echo $project->ID; ?>" />
                     </th>
                     
-                    <td class="project-title column-title"><strong><a class="row-title" href="<?php echo cpm_url_project_details( $project->ID ); ?>" title="Details of &#8220;<?php echo get_the_title( $project->ID ); ?>&#8221;"><?php echo get_the_title( $project->ID ); ?></a></strong>
+                    <td class="project-title column-title"><strong><a class="row-title" href="<?php echo cpm_url_project_details( $project->ID ); ?>" title="Details of &#8220;<?php echo $project->post_title; ?>&#8221;"><?php echo $project->post_title; ?></a></strong>
                         <div class="row-actions">
                             <span class='quick-edit'><a a class='cpm-project-quick-edit-link' href="#link-for-quick-edit" title="Edit this item">Quick Edit</a></span>
                             <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] != 'publish' ): ?>
@@ -70,7 +72,7 @@ $projects = isset( $_GET['post_status'] ) ? $project_obj->get_projects( -1, $_GE
                             <?php endif; ?>
                         </div>
                     </td>           
-                    <td class="author column-author"><a href="#author-filter"><?php echo $project->users[0]; ?></a></td>       
+                    <td class="author column-author"><a href="#author-filter">[users]</a></td>       
                     <td class="comments column-comments">
                         <div class="post-com-count-wrapper"><a href='#link-to-comments' title='Post Count' class='post-com-count'><span class='comment-count'>[count]</span></a></div>
                     </td>

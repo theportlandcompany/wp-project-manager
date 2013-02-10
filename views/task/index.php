@@ -1,7 +1,6 @@
 <?php
 $task_obj = CPM_Task::getInstance();
 $lists = $task_obj->get_task_lists( $project_id );
-
 cpm_get_header( __( 'To-do List', 'cpm' ), $project_id );
 ?>
 

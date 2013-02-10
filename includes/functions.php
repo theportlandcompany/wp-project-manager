@@ -435,15 +435,6 @@ function cpm_all_post_statuses() {
 }
 
 /**
- * Helper function for returning inbuilt wordpress post statuses
- */
-function cpm_inbuilt_post_statuses(  ) {
-    $inbuilt_post_statuses = array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash' );
-
-    return $inbuilt_post_statuses;
-}
-
-/**
  * Helper function for validating post status
  */
 function cpm_validate_post_status( $project_status ) {
