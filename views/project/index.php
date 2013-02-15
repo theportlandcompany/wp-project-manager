@@ -45,7 +45,7 @@ $projects = isset( $_GET['post_status'] ) ? $project_obj->get_projects( -1, $_GE
                             <span class='publish'> | <a class='cpm-project-publish-link' title='Publish this project' data-status="publish" data-id="<?php echo $project->ID ?>" href='#publish-action'>Publish</a></span>
                             <?php endif; ?>
 
-                            <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] != 'complete' &&  $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'archive' ): ?>
+                            <?php if ( $_GET['post_status'] != 'complete' &&  $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'archive' ): ?>
                             <span class='complete'> | <a class='cpm-project-complete-link' title='Complete this project' data-status="complete" data-id="<?php echo $project->ID ?>" href='#complete-action'>Complete</a></span>
                             <?php endif; ?>
 
