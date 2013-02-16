@@ -68,7 +68,7 @@ class CPM_Notification {
 
         $project_obj = CPM_Project::getInstance();
         $co_workers = $project_obj->get_users( $project_id );
-        $project = $pro_obj->get( $project_id );
+        $project = $project_obj->get( $project_id );
         $users = array();
 
         foreach ($co_workers as $user_id) {
