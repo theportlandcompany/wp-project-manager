@@ -5,6 +5,7 @@ class CPM_Notification {
     function __construct() {
         //notify users
         add_action( 'cpm_project_new', array($this, 'project_new'), 10, 2 );
+        add_action( 'cpm_project_change_status', array($this, 'project_complete'), 10, 2 );
 
         add_action( 'cpm_comment_new', array($this, 'new_comment'), 10, 3 );
         add_action( 'cpm_message_new', array($this, 'new_message'), 10, 2 );
@@ -52,6 +53,37 @@ class CPM_Notification {
 
                 $this->send( implode(', ', $users), $subject, $message );
             }
+        }
+    }
+
+    /**
+     * Notify users upon project completion
+     *
+     * @uses `cpm_project_change_status` hook
+     * @param int $project_id
+     * @param string $project_status
+     */
+    function project_complete( $project_id, $project_status ) {
+        if ( $project_status != 'complete' ) return;
+
+        $project_obj = CPM_Project::getInstance();
+        $co_workers = $project_obj->get_users( $project_id );
+        $project = $pro_obj->get( $project_id );
+        $users = array();
+
+        foreach ($co_workers as $user_id) {
+            $user = get_user_by( 'id', $user_id );
+            $users[$user_id] = sprintf( '%s <%s>', $user->display_name, $user->user_email );
+        }
+
+        //if any users left, get their mail addresses and send mail
+        if ( $users ) {
+
+            $site_name = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+            $subject = sprintf( __( 'Project %s has been marked completed', 'cpm' ), $project->post_title );
+            $message .= sprintf( __( 'You can review the project by going here: %s', 'cpm' ), cpm_url_project_details( $project_id ) ) . "\r\n";
+
+            $this->send( implode(', ', $users), $subject, $message );
         }
     }
 
