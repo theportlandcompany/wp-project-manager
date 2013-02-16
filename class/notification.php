@@ -71,9 +71,9 @@ class CPM_Notification {
         $project = $project_obj->get( $project_id );
         $users = array();
 
-        foreach ($co_workers as $user_id) {
-            $user = get_user_by( 'id', $user_id );
-            $users[$user_id] = sprintf( '%s <%s>', $user->display_name, $user->user_email );
+        $count = 0;
+        foreach ($co_workers as $user) {
+            $users[$user['id']] = sprintf( '%s <%s>', $user['name'], $user['email'] );
         }
 
         //if any users left, get their mail addresses and send mail
