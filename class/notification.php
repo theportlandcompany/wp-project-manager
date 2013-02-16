@@ -71,7 +71,6 @@ class CPM_Notification {
         $project = $project_obj->get( $project_id );
         $users = array();
 
-        $count = 0;
         foreach ($co_workers as $user) {
             $users[$user['id']] = sprintf( '%s <%s>', $user['name'], $user['email'] );
         }
