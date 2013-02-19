@@ -1,7 +1,7 @@
 <?php
 $project_obj = CPM_Project::getInstance();
-$post_status = $_GET['post_status'];
-$projects = isset( $post_status ) ? $project_obj->get_projects( -1, $post_status ) : $project_obj->get_projects();
+$post_status = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'publish';
+$projects = $project_obj->get_projects( -1, $post_status );
 ?>
 
 <div class="icon32" id="icon-themes"><br></div>
@@ -13,8 +13,7 @@ $projects = isset( $post_status ) ? $project_obj->get_projects( -1, $post_status
 
 <div class="cpm-projects">
 
-    <?php $active_nav_menu = isset( $post_status ) ? $post_status : 'publish'; ?>
-    <?php cpm_get_status_nav_menu( __( cpm_map_status( $active_nav_menu ), 'cpm' ) ); ?>
+    <?php cpm_get_status_nav_menu( __( cpm_map_status( $post_status ), 'cpm' ) ); ?>
 
     <div id="">
 
