@@ -613,7 +613,7 @@ add_filter( 'comments_clauses', 'cpm_hide_comments', 10 );
  *
  * @since 0.3.1.tpc-0.1
  *
- * @param string $title
+ * @param string $admin_title
  * @param string $sep
  */
 function cpm_display_project_title( $admin_title, $sep ) {
