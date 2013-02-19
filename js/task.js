@@ -242,6 +242,7 @@
             e.preventDefault();
 
             $('.cpm-new-todolist-form').slideToggle();
+            $('.tasklist_detail').autosize({append: "\n"});
         },
 
         toggleNewTaskListForm: function (e) {

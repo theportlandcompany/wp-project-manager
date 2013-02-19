@@ -186,7 +186,7 @@ function cpm_tasklist_form( $project_id, $list = null ) {
         </div>
 
         <div class="item content">
-            <textarea name="tasklist_detail" id="" cols="40" rows="2" placeholder="<?php esc_attr_e( 'Tasklist detail', 'cpm' ); ?>"><?php echo esc_textarea( $list_detail ); ?></textarea>
+            <textarea name="tasklist_detail" class="tasklist_detail" cols="40" rows="2" placeholder="<?php esc_attr_e( 'Tasklist detail', 'cpm' ); ?>"><?php echo esc_textarea( $list_detail ); ?></textarea>
         </div>
 
         <div class="item milestone">
