@@ -775,3 +775,31 @@ function cpm_activity_html( $activities ) {
 
     return $html;
 }
+
+/**
+ * Prints Priority Tasks Metabox
+ *
+ * @since 0.3.1.tpc-0.1
+ * @param int $user_id
+ * @return string
+ */
+function cpm_tasks_metabox( $user_id = 1 ) { 
+    $task_obj = CPM_Task::getInstance(); 
+    $tasks = $task_obj->get_tasks_by_user( $user_id );
+
+    ?>
+    <div class="cpm-priority-tasks">
+        <div class="postbox">
+            <h3><span>Priority Tasks</span></h3>
+            <ul>
+            <?php $count = 0; ?>
+            <?php foreach ( $tasks as $task ) { ?>
+                <?php $list_id =  get_post_field( 'post_parent', $task->ID ); ?>
+                <?php $project_id =  get_post_field( 'post_parent', $list_id ); ?>
+                <li class="<?php echo ++$count == count($tasks) ? 'last' : ''; ?>"><a href="<?php echo cpm_url_single_task( $project_id, $list_id , $task->ID ); ?>" target="_blank"><?php echo $task->post_title; ?></a></li>
+            <?php } ?>
+            </ul>
+        </div>
+    </div>
+    <?php
+}

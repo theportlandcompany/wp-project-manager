@@ -246,6 +246,28 @@ class CPM_Task {
     }
 
     /**
+     * Get tasks based on user
+     *
+     * @since 0.3.1.tpc-0.1
+     * @param int $user_id
+     * @return object object array of the result set
+     */
+    function get_tasks_by_user( $user_id ) {
+        global $wpdb;
+
+        $sql = "SELECT * FROM $wpdb->posts"; 
+        $sql .= " INNER JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id";
+        $sql .= " WHERE $wpdb->posts.post_type = 'task'";
+        $sql .= " AND $wpdb->postmeta.meta_value = '%s'";
+        $sql .= " AND $wpdb->postmeta.post_id IN ( SELECT `post_id` FROM $wpdb->postmeta WHERE $wpdb->postmeta.meta_key = '_completed' AND $wpdb->postmeta.meta_value = '0' )";
+        $sql .= " ORDER BY `post_date` ASC";
+
+        $tasks = $wpdb->get_results( sprintf( $sql, $user_id ) );
+
+        return $tasks;
+    }
+
+    /**
      * Set meta info for a task list
      *
      * @param object $task_list
