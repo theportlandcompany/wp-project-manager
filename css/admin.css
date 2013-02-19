@@ -88,15 +88,13 @@ textarea.tasklist_detail {
   -webkit-transition: height 0.2s;
   -moz-transition: height 0.2s;
   transition: height 0.2s;
+  min-width: 300px;
 }
 textarea.todo_content {
   width: 60%;
-  min-width: 300px;
 }
 textarea.tasklist_detail {
-  width: 40%;
-  min-width: 300px;
-}
+  width: 40%;}
 .cpm-left {
   float: left;
 }
