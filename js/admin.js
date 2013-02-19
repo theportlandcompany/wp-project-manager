@@ -241,6 +241,7 @@
                     data = {
                         project_id: self.attr('data-id'),
                         project_status: self.attr('data-status'),
+                        current_tab: self.attr('data-current-tab'),
                         action: 'cpm_project_change_status',
                         _wpnonce: CPM_Vars.nonce
                     };

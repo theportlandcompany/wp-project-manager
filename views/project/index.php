@@ -1,6 +1,7 @@
 <?php
 $project_obj = CPM_Project::getInstance();
-$projects = isset( $_GET['post_status'] ) ? $project_obj->get_projects( -1, $_GET['post_status'] ) : $project_obj->get_projects();
+$post_status = $_GET['post_status'];
+$projects = isset( $post_status ) ? $project_obj->get_projects( -1, $post_status ) : $project_obj->get_projects();
 ?>
 
 <div class="icon32" id="icon-themes"><br></div>
@@ -12,7 +13,7 @@ $projects = isset( $_GET['post_status'] ) ? $project_obj->get_projects( -1, $_GE
 
 <div class="cpm-projects">
 
-    <?php $active_nav_menu = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'publish'; ?>
+    <?php $active_nav_menu = isset( $post_status ) ? $post_status : 'publish'; ?>
     <?php cpm_get_status_nav_menu( __( cpm_map_status( $active_nav_menu ), 'cpm' ) ); ?>
 
     <div id="">
@@ -41,32 +42,32 @@ $projects = isset( $_GET['post_status'] ) ? $project_obj->get_projects( -1, $_GE
                     <td class="project-title column-title"><strong><a class="row-title" href="<?php echo cpm_url_project_details( $project->ID ); ?>" title="Details of &#8220;<?php echo get_the_title( $project->ID ); ?>&#8221;"><?php echo get_the_title( $project->ID ); ?></a></strong>
                         <div class="row-actions">
                             <span class='quick-edit'><a a class='cpm-project-quick-edit-link' href="#link-for-quick-edit" title="Edit this item">Quick Edit</a></span>
-                            <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] != 'publish' ): ?>
-                            <span class='publish'> | <a class='cpm-project-publish-link' title='Publish this project' data-status="publish" data-id="<?php echo $project->ID ?>" href='#publish-action'>Publish</a></span>
+                            <?php if ( isset( $post_status) && $post_status != 'publish' ): ?>
+                            <span class='publish'> | <a class='cpm-project-publish-link' title='Publish this project' data-current-tab="<?php echo $post_status; ?>" data-status="publish" data-id="<?php echo $project->ID ?>" href='#publish-action'>Publish</a></span>
                             <?php endif; ?>
 
-                            <?php if ( $_GET['post_status'] != 'complete' &&  $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'archive' ): ?>
-                            <span class='complete'> | <a class='cpm-project-complete-link' title='Complete this project' data-status="complete" data-id="<?php echo $project->ID ?>" href='#complete-action'>Complete</a></span>
+                            <?php if ( $post_status != 'complete' &&  $post_status != 'draft' && $post_status != 'archive' ): ?>
+                            <span class='complete'> | <a class='cpm-project-complete-link' title='Complete this project' data-current-tab="<?php echo $post_status; ?>" data-status="complete" data-id="<?php echo $project->ID ?>" href='#complete-action'>Complete</a></span>
                             <?php endif; ?>
 
-                            <?php if ( $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'complete' && $_GET['post_status'] != 'archive' && $_GET['post_status'] != 'pending' ): ?>
-                            <span class='draft'> | <a class='cpm-project-draft-link' title='Set this project as Draft' data-status="draft" data-id="<?php echo $project->ID ?>" href='#draft-action'>Draft</a></span>
+                            <?php if ( $post_status != 'draft' && $post_status != 'complete' && $post_status != 'archive' && $post_status != 'pending' ): ?>
+                            <span class='draft'> | <a class='cpm-project-draft-link' title='Set this project as Draft' data-current-tab="<?php echo $post_status; ?>" data-status="draft" data-id="<?php echo $project->ID ?>" href='#draft-action'>Draft</a></span>
                             <?php endif; ?>
 
-                            <?php if ( $_GET['post_status'] != 'pending' && $_GET['post_status'] != 'complete' && $_GET['post_status'] != 'archive' && $_GET['post_status'] != 'draft' ): ?>
-                            <span class='pending'> | <a class='cpm-project-pending-link' title='Set this project as Pending' data-status="pending" data-id="<?php echo $project->ID ?>" href='#pending-action'>Pending</a></span>
+                            <?php if ( $post_status != 'pending' && $post_status != 'complete' && $post_status != 'archive' && $post_status != 'draft' ): ?>
+                            <span class='pending'> | <a class='cpm-project-pending-link' title='Set this project as Pending' data-current-tab="<?php echo $post_status; ?>" data-status="pending" data-id="<?php echo $project->ID ?>" href='#pending-action'>Pending</a></span>
                             <?php endif; ?>
 
-                            <?php if ( $_GET['post_status'] != 'archive' &&  $_GET['post_status'] != 'draft' && $_GET['post_status'] != 'pending' ): ?>
-                            <span class='archive'> | <a class='cpm-project-archive-link' title='Move this project to Archive' data-status="archive" data-id="<?php echo $project->ID ?>" href='#archive-action'>Archive</a></span>
+                            <?php if ( $post_status != 'archive' &&  $post_status != 'draft' && $post_status != 'pending' ): ?>
+                            <span class='archive'> | <a class='cpm-project-archive-link' title='Move this project to Archive' data-current-tab="<?php echo $post_status; ?>" data-status="archive" data-id="<?php echo $project->ID ?>" href='#archive-action'>Archive</a></span>
                             <?php endif; ?>
 
-                            <?php if ( !isset( $_GET['post_status']) || $_GET['post_status'] != 'trash' ): ?>
-                            <span class='trash'> | <a class='cpm-project-trash-link' title='Move this project to the Trash' data-status="trash" data-id="<?php echo $project->ID ?>" href='#move-to-trash-action'>Trash</a></span>
+                            <?php if ( !isset( $post_status) || $post_status != 'trash' ): ?>
+                            <span class='trash'> | <a class='cpm-project-trash-link' title='Move this project to the Trash' data-current-tab="<?php echo $post_status; ?>" data-status="trash" data-id="<?php echo $project->ID ?>" href='#move-to-trash-action'>Trash</a></span>
                             <?php endif; ?>
 
-                            <?php if ( isset( $_GET['post_status']) && $_GET['post_status'] == 'trash' ): ?>
-                            <span class='delete'> | <a class='cpm-project-delete-link submitdelete' title='Delete this project permanently' data-id="<?php echo $project->ID ?>" href='#delete-action'>Delete Permanently</a></span>
+                            <?php if ( isset( $post_status) && $post_status == 'trash' ): ?>
+                            <span class='delete'> | <a class='cpm-project-delete-link submitdelete' title='Delete this project permanently' data-current-tab="<?php echo $post_status; ?>" data-id="<?php echo $project->ID ?>" href='#delete-action'>Delete Permanently</a></span>
                             <?php endif; ?>
                         </div>
                     </td>           
