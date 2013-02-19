@@ -45,6 +45,8 @@
 
             self.closest('li').addClass('cpm-hide');
             next.removeClass('cpm-hide');
+
+            $('.todo_content').autosize({append: "\n"});
         },
 
         hideNewTodoForm: function (e) {

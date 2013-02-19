@@ -128,7 +128,7 @@ function cpm_task_new_form( $list_id, $project_id, $task = null, $single = false
         <?php } ?>
 
         <div class="item content">
-            <textarea name="task_text" class="todo_content" cols="40" placeholder="<?php esc_attr_e( 'Add a new to-do', 'cpm' ) ?>" rows="1"><?php echo esc_textarea( $task_content ); ?></textarea>
+            <textarea name="task_text" class="todo_content" cols="50" placeholder="<?php esc_attr_e( 'Add a new to-do', 'cpm' ) ?>" rows="1"><?php echo esc_textarea( $task_content ); ?></textarea>
         </div>
         <div class="item date">
             <input type="text" autocomplete="off" class="datepicker" placeholder="<?php esc_attr_e( 'Due date', 'cpm' ); ?>" value="<?php echo esc_attr( $task_due ); ?>" name="task_due" />
