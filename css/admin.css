@@ -87,7 +87,8 @@ textarea.todo_content {
   -webkit-transition: height 0.2s;
   -moz-transition: height 0.2s;
   transition: height 0.2s;
-  width: 35%;
+  width: 80%;
+  min-width: 300px;
 }
 .cpm-left {
   float: left;
