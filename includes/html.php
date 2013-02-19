@@ -128,7 +128,7 @@ function cpm_task_new_form( $list_id, $project_id, $task = null, $single = false
         <?php } ?>
 
         <div class="item content">
-            <textarea name="task_text" class="todo_content" cols="40" placeholder="<?php esc_attr_e( 'Add a new to-do', 'cpm' ) ?>" rows="1"><?php echo esc_textarea( $task_content ); ?></textarea>
+            <textarea name="task_text" class="todo_content" cols="70" placeholder="<?php esc_attr_e( 'Add a new to-do', 'cpm' ) ?>" rows="1"><?php echo esc_textarea( $task_content ); ?></textarea>
         </div>
         <div class="item date">
             <input type="text" autocomplete="off" class="datepicker" placeholder="<?php esc_attr_e( 'Due date', 'cpm' ); ?>" value="<?php echo esc_attr( $task_due ); ?>" name="task_due" />
@@ -186,7 +186,7 @@ function cpm_tasklist_form( $project_id, $list = null ) {
         </div>
 
         <div class="item content">
-            <textarea name="tasklist_detail" id="" cols="40" rows="2" placeholder="<?php esc_attr_e( 'Tasklist detail', 'cpm' ); ?>"><?php echo esc_textarea( $list_detail ); ?></textarea>
+            <textarea name="tasklist_detail" class="tasklist_detail" cols="40" rows="2" placeholder="<?php esc_attr_e( 'Tasklist detail', 'cpm' ); ?>"><?php echo esc_textarea( $list_detail ); ?></textarea>
         </div>
 
         <div class="item milestone">
@@ -774,4 +774,32 @@ function cpm_activity_html( $activities ) {
     }
 
     return $html;
+}
+
+/**
+ * Prints Priority Tasks Metabox
+ *
+ * @since 0.3.1.tpc-0.1
+ * @param int $user_id
+ * @return string
+ */
+function cpm_tasks_metabox( $user_id = 1 ) { 
+    $task_obj = CPM_Task::getInstance(); 
+    $tasks = $task_obj->get_tasks_by_user( $user_id );
+
+    ?>
+    <div class="cpm-priority-tasks">
+        <div class="postbox">
+            <h3><span>Priority Tasks</span></h3>
+            <ul>
+            <?php $count = 0; ?>
+            <?php foreach ( $tasks as $task ) { ?>
+                <?php $list_id =  get_post_field( 'post_parent', $task->ID ); ?>
+                <?php $project_id =  get_post_field( 'post_parent', $list_id ); ?>
+                <li class="<?php echo ++$count == count($tasks) ? 'last' : ''; ?>"><a href="<?php echo cpm_url_single_task( $project_id, $list_id , $task->ID ); ?>" target="_blank"><?php echo $task->post_title; ?></a></li>
+            <?php } ?>
+            </ul>
+        </div>
+    </div>
+    <?php
 }

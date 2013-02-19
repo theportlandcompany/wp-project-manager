@@ -82,6 +82,19 @@
   box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.15);
   border: 1px solid #DDD;
 }
+textarea.todo_content,
+textarea.tasklist_detail {
+  vertical-align: top;
+  -webkit-transition: height 0.2s;
+  -moz-transition: height 0.2s;
+  transition: height 0.2s;
+  min-width: 300px;
+}
+textarea.todo_content {
+  width: 60%;
+}
+textarea.tasklist_detail {
+  width: 40%;}
 .cpm-left {
   float: left;
 }
@@ -385,7 +398,7 @@ ul.cpm-nav li a {
   position: relative;
 }
 .cpm-projects .cpm-quick-edit-project {
-  display: none
+  display: none;
 }
 .cpm-projects .cpm-quick-edit-project {
   background-color: #F5F5F5;
@@ -419,10 +432,12 @@ ul.cpm-activity ul li:before {
   position: relative;
   left: -5px;
 }
+.cpm-projects-wrap {
+  margin-right: 370px;
+}
 .cpm-projects {
-  margin-top: 0;
-  padding: 0;
-  display: block;
+  width: 100%;
+  float: left;
 }
 .cpm-projects nav.cpm-new-project {
   left: -130px;
@@ -491,6 +506,43 @@ ul.cpm-activity ul li:before {
   -moz-border-radius: 50%;
   border-radius: 50%;
   margin-right: 5px;
+}
+.cpm-priority-tasks {
+  float: right;
+  height: 300px;
+  width: 350px;
+  margin-top: 42px;
+}
+.cpm-priority-tasks h3 {
+  font-size: 15px;
+  font-weight: normal;
+  font-family: Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+  padding: 7px 10px;
+  margin: 0;
+  line-height: 1;
+  cursor: default !important;
+}
+.cpm-priority-tasks h3:hover {
+  color: #464646 !important;
+}
+.cpm-priority-tasks ul {
+  margin: 10px 0;
+}
+.cpm-priority-tasks li {
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #dfdfdf;
+  margin: 0;
+}
+.cpm-priority-tasks li:first-child {
+  border-top: none;
+}
+.cpm-priority-tasks li.last {
+  border-bottom: none;
+}
+.cpm-priority-tasks li a {
+  display: block;
+  padding: 8px 10px;
+  font-size: 13px;
 }
 /*--------------------------------------------------
 :: Message
