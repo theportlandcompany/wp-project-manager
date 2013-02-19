@@ -790,7 +790,7 @@ function cpm_tasks_metabox( $user_id = 1 ) {
     ?>
     <div class="cpm-priority-tasks">
         <div class="postbox">
-            <h3><span>Priority Tasks</span></h3>
+            <h3><span>Your Current Tasks</span></h3>
             <ul>
             <?php $count = 0; ?>
             <?php foreach ( $tasks as $task ) { ?>
