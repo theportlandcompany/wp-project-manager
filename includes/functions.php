@@ -608,7 +608,6 @@ add_filter( 'comments_clauses', 'cpm_hide_comments', 10 );
  * @param string $sep
  */
 function cpm_display_project_title( $admin_title, $sep ) {
-    global $title;
     
     if ( !isset( $_GET['page'] ) || $_GET['page'] != 'cpm_projects' ) {
         return $admin_title;
@@ -617,9 +616,8 @@ function cpm_display_project_title( $admin_title, $sep ) {
     if ( isset( $_GET['pid'] ) ) {
         $project_obj = CPM_Project::getInstance();
         $project = $project_obj->get( $_GET['pid'] );
-        $title .= '&#58; ' . $project->post_title;
+        $title = $project->post_title;
     }
-    $title .= ' &#139; ' . get_bloginfo( 'name' ) . ' &#8212; WordPress';
 
     return $title;
 }
