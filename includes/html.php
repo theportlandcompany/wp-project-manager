@@ -783,7 +783,7 @@ function cpm_activity_html( $activities ) {
  * @param int $user_id
  * @return string
  */
-function cpm_tasks_metabox( $user_id = 1 ) { 
+function cpm_current_tasks_metabox( $user_id = 1 ) { 
     $task_obj = CPM_Task::getInstance(); 
     $tasks = $task_obj->get_tasks_by_user( $user_id );
 
@@ -791,7 +791,7 @@ function cpm_tasks_metabox( $user_id = 1 ) {
     <div class="cpm-current-tasks">
         <div class="postbox">
             <h3><span><?php _e( 'Current Tasks', 'cpm' ); ?></span></h3>
-            <ul>
+            <ul class="cpm-todos">
             <?php $count = 0; ?>
             <?php foreach ( $tasks as $task ) { ?>
                 <?php $due_date =  get_post_meta( $task->ID, '_due', true ); ?>
@@ -799,12 +799,15 @@ function cpm_tasks_metabox( $user_id = 1 ) {
                 <?php $project_id =  get_post_field( 'post_parent', $list_id ); ?>
                 <?php $project_title = get_post_field( 'post_title', $project_id ); ?>
                 <li class="<?php echo ++$count == count($tasks) ? 'last' : ''; ?>">
+                    <input type="checkbox" data-list="<?php echo $list_id; ?>" data-project="<?php echo $project_id; ?>" value="<?php echo $task->ID; ?>" name="task" />
                     <a href="<?php echo cpm_url_single_task( $project_id, $list_id , $task->ID ); ?>" target="_blank"><span class="project-title"><?php _e( $project_title, 'cpm' ) ?> &#45;</span> <?php _e( $task->post_content, 'cpm' ); ?></a>
                     <?php if ( $due_date ) { ?>
                         <span class="cpm-due-date"><?php echo cpm_get_date( $due_date ); ?></span>
                     <?php } ?>
                 </li>
             <?php } ?>
+            </ul>
+            <ul class="cpm-todo-completed'">
             </ul>
         </div>
     </div>

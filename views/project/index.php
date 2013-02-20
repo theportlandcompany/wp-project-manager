@@ -97,7 +97,7 @@ $projects = $project_obj->get_projects( -1, $post_status );
     </div>
 </div>
 
-<?php cpm_tasks_metabox( get_current_user_id() ); ?>
+<?php cpm_current_tasks_metabox( get_current_user_id() ); ?>
 
 <div id="cpm-project-dialog" title="<?php _e( 'Start a new project', 'cpm' ); ?>">
     <?php if ( $project_obj->has_admin_rights() ) { ?>
