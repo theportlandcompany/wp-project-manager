@@ -788,15 +788,22 @@ function cpm_tasks_metabox( $user_id = 1 ) {
     $tasks = $task_obj->get_tasks_by_user( $user_id );
 
     ?>
-    <div class="cpm-priority-tasks">
+    <div class="cpm-current-tasks">
         <div class="postbox">
-            <h3><span>Priority Tasks</span></h3>
+            <h3><span><?php _e( 'Current Tasks', 'cpm' ); ?></span></h3>
             <ul>
             <?php $count = 0; ?>
             <?php foreach ( $tasks as $task ) { ?>
+                <?php $due_date =  get_post_meta( $task->ID, '_due', true ); ?>
                 <?php $list_id =  get_post_field( 'post_parent', $task->ID ); ?>
                 <?php $project_id =  get_post_field( 'post_parent', $list_id ); ?>
-                <li class="<?php echo ++$count == count($tasks) ? 'last' : ''; ?>"><a href="<?php echo cpm_url_single_task( $project_id, $list_id , $task->ID ); ?>" target="_blank"><?php echo $task->post_title; ?></a></li>
+                <li class="<?php echo ++$count == count($tasks) ? 'last' : ''; ?>">
+                    <a href="<?php echo cpm_url_single_task( $project_id, $list_id , $task->ID ); ?>" target="_blank"><?php echo $task->post_content; ?>
+                    <?php if ( $due_date ) { ?>
+                        <span class="cpm-due-date"><?php echo cpm_get_date( $due_date ); ?></span>
+                    <?php } ?>
+                    </a>
+                </li>
             <?php } ?>
             </ul>
         </div>

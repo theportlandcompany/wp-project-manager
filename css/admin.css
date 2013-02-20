@@ -507,13 +507,13 @@ ul.cpm-activity ul li:before {
   border-radius: 50%;
   margin-right: 5px;
 }
-.cpm-priority-tasks {
+.cpm-current-tasks {
   float: right;
   height: 300px;
   width: 350px;
   margin-top: 42px;
 }
-.cpm-priority-tasks h3 {
+.cpm-current-tasks h3 {
   font-size: 15px;
   font-weight: normal;
   font-family: Georgia,"Times New Roman","Bitstream Charter",Times,serif;
@@ -522,27 +522,28 @@ ul.cpm-activity ul li:before {
   line-height: 1;
   cursor: default !important;
 }
-.cpm-priority-tasks h3:hover {
+.cpm-current-tasks h3:hover {
   color: #464646 !important;
 }
-.cpm-priority-tasks ul {
+.cpm-current-tasks ul {
   margin: 10px 0;
 }
-.cpm-priority-tasks li {
+.cpm-current-tasks li {
   border-top: 1px solid #fff;
   border-bottom: 1px solid #dfdfdf;
   margin: 0;
 }
-.cpm-priority-tasks li:first-child {
+.cpm-current-tasks li:first-child {
   border-top: none;
 }
-.cpm-priority-tasks li.last {
+.cpm-current-tasks li.last {
   border-bottom: none;
 }
-.cpm-priority-tasks li a {
-  display: block;
+.cpm-current-tasks li a {
+  display: inline-block;
   padding: 8px 10px;
   font-size: 13px;
+  line-height: 16px;
 }
 /*--------------------------------------------------
 :: Message
@@ -926,7 +927,8 @@ ul.cpm-activity ul li:before {
   color: #21759b;
 }
 .cpm-single-task .cpm-todo-wrap .cpm-todo-content .cpm-assigned-user,
-.cpm-single-task .cpm-todo-wrap .cpm-todo-content .cpm-due-date {
+.cpm-single-task .cpm-todo-wrap .cpm-todo-content .cpm-due-date,
+.cpm-current-tasks .cpm-due-date {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
