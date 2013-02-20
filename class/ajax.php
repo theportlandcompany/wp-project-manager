@@ -113,11 +113,12 @@ class CPM_Ajax {
 
         $project_id = isset( $posted['project_id'] ) ? intval( $posted['project_id'] ) : 0;
         $project_status = isset( $posted['project_status'] ) && cpm_validate_post_status( $posted['project_status'] ) ? $posted['project_status'] : 'publish';
+        $current_tab = isset( $posted['current_tab'] ) ? $posted['current_tab'] : 'publish';
         CPM_Project::getInstance()->change_status( $project_id, $project_status );
 
         echo json_encode( array(
             'success' => true,
-            'url' => cpm_url_projects_with_status( $project_status )
+            'url' => cpm_url_projects_with_status( $current_tab )
         ) );
 
         exit;

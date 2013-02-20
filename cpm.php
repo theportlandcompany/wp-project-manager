@@ -108,6 +108,7 @@ class WeDevs_CPM {
         wp_enqueue_script( 'jquery-ui-datepicker' );
         wp_enqueue_script( 'chosen', plugins_url( 'js/chosen.jquery.min.js', __FILE__ ) );
         wp_enqueue_script( 'validate', plugins_url( 'js/jquery.validate.min.js', __FILE__ ) );
+        wp_enqueue_script( 'autoresize-textarea', plugins_url( 'js/jquery.autosize.min.js', __FILE__ ) );
         wp_enqueue_script( 'plupload-handlers' );
         wp_enqueue_script( 'cpm_admin', plugins_url( 'js/admin.js', __FILE__ ) );
         wp_enqueue_script( 'cpm_task', plugins_url( 'js/task.js', __FILE__ ) );
