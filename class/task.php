@@ -248,10 +248,7 @@ class CPM_Task {
     /**
      * Get tasks based on user
      *
-<<<<<<< HEAD
-=======
      * @since 0.3.1.tpc-0.1
->>>>>>> bugs
      * @param int $user_id
      * @return object object array of the result set
      */
@@ -261,16 +258,13 @@ class CPM_Task {
         $sql = "SELECT * FROM $wpdb->posts"; 
         $sql .= " INNER JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id";
         $sql .= " WHERE $wpdb->posts.post_type = 'task'";
-<<<<<<< HEAD
         $sql .= " AND $wpdb->postmeta.meta_value = '%s'";
         $sql .= " AND $wpdb->postmeta.post_id IN ( SELECT `post_id` FROM $wpdb->postmeta WHERE $wpdb->postmeta.meta_key = '_completed' AND $wpdb->postmeta.meta_value = '0' )";
         $sql .= " ORDER BY `post_date` DESC";
-=======
         $sql .= " AND $wpdb->postmeta.post_id IN ( SELECT `post_id` FROM $wpdb->postmeta WHERE $wpdb->postmeta.meta_key = '_completed' AND $wpdb->postmeta.meta_value = '0' )";
         $sql .= " AND $wpdb->postmeta.post_id IN ( SELECT `post_id` FROM $wpdb->postmeta WHERE $wpdb->postmeta.meta_key = '_assigned' AND $wpdb->postmeta.meta_value = '%s' )";
         $sql .= " GROUP BY $wpdb->postmeta.post_id";
         $sql .= " ORDER BY `post_date` ASC";
->>>>>>> bugs
 
         $tasks = $wpdb->get_results( sprintf( $sql, $user_id ) );
 
