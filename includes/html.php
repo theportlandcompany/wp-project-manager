@@ -807,8 +807,6 @@ function cpm_current_tasks_metabox( $user_id = 1 ) {
                 </li>
             <?php } ?>
             </ul>
-            <ul class="cpm-todo-completed'">
-            </ul>
         </div>
     </div>
     <?php
