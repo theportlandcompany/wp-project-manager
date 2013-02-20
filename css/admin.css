@@ -532,6 +532,7 @@ ul.cpm-activity ul li:before {
   border-top: 1px solid #fff;
   border-bottom: 1px solid #dfdfdf;
   margin: 0;
+  padding: 0 10px;
 }
 .cpm-current-tasks li:first-child {
   border-top: none;
@@ -541,12 +542,16 @@ ul.cpm-activity ul li:before {
 }
 .cpm-current-tasks li a {
   display: inline-block;
-  padding: 8px 10px;
+  padding: 8px 0;
   font-size: 13px;
   line-height: 16px;
 }
 .cpm-current-tasks span.project-title {
   font-weight: bold;
+}
+.cpm-current-tasks span.cpm-due-date {
+  display: inline-block;
+  margin-bottom: 10px;
 }
 /*--------------------------------------------------
 :: Message
@@ -1038,10 +1043,12 @@ ul.cpm-todolists article.cpm-todolist > ul li .cpm-todo-wrap .cpm-todo-action {
 ul.cpm-todolists article.cpm-todolist > ul li .cpm-todo-wrap .cpm-todo-action a {
   display: inline-block;
 }
-ul.cpm-todolists article.cpm-todolist > ul li .cpm-todo-wrap .cpm-todo-content a {
+ul.cpm-todolists article.cpm-todolist > ul li .cpm-todo-wrap .cpm-todo-content a,
+.cpm-current-tasks li a {
   color: #333;
 }
-ul.cpm-todolists article.cpm-todolist > ul li .cpm-todo-wrap .cpm-todo-content a:hover {
+ul.cpm-todolists article.cpm-todolist > ul li .cpm-todo-wrap .cpm-todo-content a:hover,
+.cpm-current-tasks li a:hover {
   text-decoration: underline;
   color: #21759b;
 }
