@@ -797,8 +797,9 @@ function cpm_tasks_metabox( $user_id = 1 ) {
                 <?php $due_date =  get_post_meta( $task->ID, '_due', true ); ?>
                 <?php $list_id =  get_post_field( 'post_parent', $task->ID ); ?>
                 <?php $project_id =  get_post_field( 'post_parent', $list_id ); ?>
+                <?php $project_title = get_post_field( 'post_title', $project_id ); ?>
                 <li class="<?php echo ++$count == count($tasks) ? 'last' : ''; ?>">
-                    <a href="<?php echo cpm_url_single_task( $project_id, $list_id , $task->ID ); ?>" target="_blank"><?php echo $task->post_content; ?>
+                    <a href="<?php echo cpm_url_single_task( $project_id, $list_id , $task->ID ); ?>" target="_blank"><span class="project-title"><?php _e( $project_title, 'cpm' ) ?> &#45;</span> <?php _e( $task->post_content, 'cpm' ); ?>
                     <?php if ( $due_date ) { ?>
                         <span class="cpm-due-date"><?php echo cpm_get_date( $due_date ); ?></span>
                     <?php } ?>

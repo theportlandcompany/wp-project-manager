@@ -545,6 +545,9 @@ ul.cpm-activity ul li:before {
   font-size: 13px;
   line-height: 16px;
 }
+.cpm-current-tasks span.project-title {
+  font-weight: bold;
+}
 /*--------------------------------------------------
 :: Message
 -------------------------------------------------- */
