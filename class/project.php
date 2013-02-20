@@ -385,7 +385,7 @@ class CPM_Project {
      * @param int $project_id
      * @return array
      */
-    function status_nav_links( $project_id ) {
+    function status_nav_links() {
         $links = array(
             cpm_url_projects_with_status( 'publish' ) => __( 'Published', 'cpm' ),
             cpm_url_projects_with_status( 'complete' ) => __( 'Completed', 'cpm' ),
