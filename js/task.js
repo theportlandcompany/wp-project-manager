@@ -22,6 +22,8 @@
 
             //current tasks metabox
             $('.cpm-current-tasks').on('change', 'select.users-dropdown', this.currentTasks);
+            //current tasks metabox
+            $('.cpm-current-tasks').on('click', 'input[type=checkbox]', this.markDoneMetaboxTask);
 
             //task done, undone, delete
             $('ul.cpm-todolists').on('click', '.cpm-todos input[type=checkbox]', this.markDone);
@@ -131,6 +133,28 @@
                     } else if(singleWrap.length) {
                         singleWrap.html(res.content);
                     }
+                }
+            });
+        },
+
+        markDoneMetaboxTask: function () {
+
+            var self = $(this),
+                list = self.closest('li'),
+                data = {
+                    task_id: self.val(),
+                    project_id: self.data('project'),
+                    list_id: self.data('list'),
+                    action: 'cpm_task_complete',
+                    '_wpnonce': CPM_Vars.nonce
+                };
+
+
+            $.post(CPM_Vars.ajaxurl, data, function (res) {
+                res = JSON.parse(res);
+
+                if(res.success === true ) {
+                    list.remove();
                 }
             });
         },

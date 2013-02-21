@@ -825,6 +825,7 @@ function cpm_current_tasks( $tasks ) {
         $project_title = get_post_field( 'post_title', $project_id );
         
         $list .= '<li>';
+            $list .= '<input type="checkbox" data-list="'. $list_id .'" data-project="'. $project_id .'" value="'. $task->ID .'" name="task" />';
             $list .= '<a href="'. cpm_url_single_task( $project_id, $list_id , $task->ID ) .'" target="_blank"><span class="project-title">'. __( $project_title, 'cpm' ) .' &#45; </span>'. __( $task->post_content, 'cpm' ) .'</a>';
             if ( $due_date ) {
             $list .= '<span class="cpm-due-date">'. cpm_get_date( $due_date ) .'</span>';
