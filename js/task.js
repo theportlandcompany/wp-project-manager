@@ -20,6 +20,9 @@
             $('.cpm-single-task').on('click', '.cpm-task-complete input[type=checkbox]', this.markUnDone);
             $('.cpm-single-task').on('click', 'a.cpm-todo-delete', this.deleteTodo);
 
+            //current tasks metabox
+            $('.cpm-current-tasks').on('change', 'select.users-dropdown', this.currentTasks);
+
             //task done, undone, delete
             $('ul.cpm-todolists').on('click', '.cpm-todos input[type=checkbox]', this.markDone);
             $('ul.cpm-todolists').on('click', '.cpm-todo-completed input[type=checkbox]', this.markUnDone);
@@ -327,6 +330,26 @@
                     }
                 });
             }
+        },
+
+        currentTasks: function(e) {
+            e.preventDefault();
+
+            var self = $(this),
+                taskListCon = self.closest('header').siblings('.cpm-todos'),
+                data = {
+                    user_id: self.val(),
+                    action: 'cpm_tasks_by_user',
+                    '_wpnonce': CPM_Vars.nonce
+                };
+
+            $.post(CPM_Vars.ajaxurl, data, function (res) {
+                res = JSON.parse(res);
+
+                if(res.success === true) {
+                    taskListCon.html(res.content);
+                }
+            });
         }
     };
 

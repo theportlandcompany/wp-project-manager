@@ -513,17 +513,42 @@ ul.cpm-activity ul li:before {
   width: 350px;
   margin-top: 42px;
 }
-.cpm-current-tasks h3 {
+.cpm-current-tasks header {
+  padding: 2px 10px;
+  margin: 0;
+  background: #f1f1f1;
+  background-image: -webkit-gradient(linear,left bottom,left top,from(#ececec),to(#f9f9f9));
+  background-image: -webkit-linear-gradient(bottom,#ececec,#f9f9f9);
+  background-image: -moz-linear-gradient(bottom,#ececec,#f9f9f9);
+  background-image: -o-linear-gradient(bottom,#ececec,#f9f9f9);
+  background-image: linear-gradient(to top,#ececec,#f9f9f9);
+  border-bottom: 1px solid #dfdfdf;
+  -webkit-box-shadow: 0 1px 0 #fff;
+  box-shadow: 0 1px 0 #fff;
+
+}
+.cpm-current-tasks header h3 {
   font-size: 15px;
   font-weight: normal;
   font-family: Georgia,"Times New Roman","Bitstream Charter",Times,serif;
-  padding: 7px 10px;
-  margin: 0;
   line-height: 1;
   cursor: default !important;
+  float: left;
+  text-shadow: #fff 0 1px 0;
+  background: none;
+  box-shadow: none;
+  border: none;
+  line-height: 30px;
+  margin: 0;
 }
-.cpm-current-tasks h3:hover {
+.cpm-current-tasks header h3:hover {
   color: #464646 !important;
+}
+.cpm-current-tasks header select {
+  float: right;
+  font-size: 13px;
+  margin-top: 2px;
+  width: 100px;
 }
 .cpm-current-tasks ul {
   margin: 10px 0;
@@ -537,12 +562,12 @@ ul.cpm-activity ul li:before {
 .cpm-current-tasks li:first-child {
   border-top: none;
 }
-.cpm-current-tasks li.last {
+.cpm-current-tasks li:last-child {
   border-bottom: none;
 }
 .cpm-current-tasks li a {
   display: inline-block;
-  padding: 8px 0;
+  padding: 8px 8px 8px 0;
   font-size: 13px;
   line-height: 16px;
 }

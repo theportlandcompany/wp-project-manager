@@ -777,36 +777,61 @@ function cpm_activity_html( $activities ) {
 }
 
 /**
- * Prints Priority Tasks Metabox
+ * Prints Current Tasks Metabox
  *
  * @since 0.3.1.tpc-0.1
  * @param int $user_id
  * @return string
  */
-function cpm_tasks_metabox( $user_id = 1 ) { 
+function cpm_current_tasks_metabox( $user_id = 1 ) { 
     $task_obj = CPM_Task::getInstance(); 
     $tasks = $task_obj->get_tasks_by_user( $user_id );
+    $users = get_users();
 
-    ?>
-    <div class="cpm-current-tasks">
-        <div class="postbox">
-            <h3><span><?php _e( 'Current Tasks', 'cpm' ); ?></span></h3>
-            <ul>
-            <?php $count = 0; ?>
-            <?php foreach ( $tasks as $task ) { ?>
-                <?php $due_date =  get_post_meta( $task->ID, '_due', true ); ?>
-                <?php $list_id =  get_post_field( 'post_parent', $task->ID ); ?>
-                <?php $project_id =  get_post_field( 'post_parent', $list_id ); ?>
-                <?php $project_title = get_post_field( 'post_title', $project_id ); ?>
-                <li class="<?php echo ++$count == count($tasks) ? 'last' : ''; ?>">
-                    <a href="<?php echo cpm_url_single_task( $project_id, $list_id , $task->ID ); ?>" target="_blank"><span class="project-title"><?php _e( $project_title, 'cpm' ) ?> &#45;</span> <?php _e( $task->post_content, 'cpm' ); ?></a>
-                    <?php if ( $due_date ) { ?>
-                        <span class="cpm-due-date"><?php echo cpm_get_date( $due_date ); ?></span>
-                    <?php } ?>
-                </li>
-            <?php } ?>
-            </ul>
-        </div>
-    </div>
-    <?php
+    $metabox = '';
+    $metabox .= '<div class="cpm-current-tasks">';
+        $metabox .= '<div class="postbox">';
+            $metabox .= '<header class="clearfix">';
+                $metabox .= '<h3><span>'. __( 'Current Tasks', 'cpm' ) .'</span></h3>';
+                $metabox .= '<select class="users-dropdown">';
+                    foreach ( $users as $user ) {
+                    $metabox .= '<option value="'. $user->ID .'">'. $user->user_nicename .'</option>';
+                    }
+                $metabox .= '</select>';
+            $metabox .= '</header>';
+            $metabox .= '<div class="cpm-todos">';
+                $metabox .= cpm_current_tasks( $tasks );
+            $metabox .= '</div>';
+        $metabox .= '</div>';
+    $metabox .= '</div>';
+
+    echo $metabox;
+}
+
+/**
+ * Prints Current Tasks list
+ *
+ * @since 0.3.1.tpc-0.1
+ * @param array $tasks
+ * @return string
+ */
+function cpm_current_tasks( $tasks ) { 
+    $list = '';
+    $list .= '<ul>';
+    foreach ( $tasks as $task ) {
+        $due_date =  get_post_meta( $task->ID, '_due', true );
+        $list_id =  get_post_field( 'post_parent', $task->ID );
+        $project_id =  get_post_field( 'post_parent', $list_id );
+        $project_title = get_post_field( 'post_title', $project_id );
+        
+        $list .= '<li>';
+            $list .= '<a href="'. cpm_url_single_task( $project_id, $list_id , $task->ID ) .'" target="_blank"><span class="project-title">'. __( $project_title, 'cpm' ) .' &#45; </span>'. __( $task->post_content, 'cpm' ) .'</a>';
+            if ( $due_date ) {
+            $list .= '<span class="cpm-due-date">'. cpm_get_date( $due_date ) .'</span>';
+            }
+        $list .= '</li>';
+    }
+    $list .= '</ul>';
+
+    return $list;
 }

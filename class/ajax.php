@@ -31,6 +31,8 @@ class CPM_Ajax {
         add_action( 'wp_ajax_cpm_update_list', array($this, 'update_tasklist') );
         add_action( 'wp_ajax_cpm_tasklist_delete', array($this, 'delete_tasklist') );
 
+        add_action( 'wp_ajax_cpm_tasks_by_user', array($this, 'get_tasks_by_user') );
+
         add_action( 'wp_ajax_cpm_milestone_new', array($this, 'milestone_new') );
         add_action( 'wp_ajax_cpm_milestone_complete', array($this, 'milestone_complete') );
         add_action( 'wp_ajax_cpm_milestone_open', array($this, 'milestone_open') );
@@ -218,6 +220,23 @@ class CPM_Ajax {
             'success' => true,
             'content' => cpm_task_html( $task, $project_id, $list_id, $single ),
             'progress' => cpm_task_completeness( $complete['total'], $complete['completed'] )
+        );
+
+        echo json_encode( $response );
+        exit;
+    }
+
+    function get_tasks_by_user() {
+        check_ajax_referer( 'cpm_nonce' );
+
+        $posted = $_POST;
+        $user_id = (int) $posted['user_id'];
+        $task_obj = CPM_Task::getInstance();
+        $tasks = $task_obj->get_tasks_by_user( $user_id );
+
+        $response = array(
+            'success' => true,
+            'content' => cpm_current_tasks( $tasks )
         );
 
         echo json_encode( $response );

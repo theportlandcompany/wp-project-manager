@@ -186,8 +186,6 @@
                     container = $(this).closest('tr').prev('.project-item');
                     data = form.serialize();   
 
-                console.log(data);
-
                 form.append('<div class="cpm-loading">Saving...</div>');
                 $.post(CPM_Vars.ajaxurl, data, function (res) {
                     res = $.parseJSON(res);
