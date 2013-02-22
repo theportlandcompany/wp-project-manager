@@ -11,12 +11,13 @@ $projects = $project_obj->get_projects( -1, $post_status );
     <?php } ?> 
 </h2>
 
-<div class="cpm-projects-wrap">
-    <div class="cpm-projects">
+<?php cpm_current_tasks_metabox( get_current_user_id() ); ?>
 
-        <?php cpm_get_status_nav_menu( __( cpm_map_status( $post_status ), 'cpm' ) ); ?>
+<div class="cpm-projects">
 
-        <div id="">
+    <?php cpm_get_status_nav_menu( __( cpm_map_status( $post_status ), 'cpm' ) ); ?>
+
+    <div id="">
 
         <table class="wp-list-table widefat fixed posts" cellspacing="0">
             <thead>
@@ -93,11 +94,8 @@ $projects = $project_obj->get_projects( -1, $post_status );
             </tfoot>
         </table>
 
-        </div>
     </div>
 </div>
-
-<?php cpm_current_tasks_metabox( get_current_user_id() ); ?>
 
 <div id="cpm-project-dialog" title="<?php _e( 'Start a new project', 'cpm' ); ?>">
     <?php if ( $project_obj->has_admin_rights() ) { ?>

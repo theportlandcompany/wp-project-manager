@@ -432,12 +432,9 @@ ul.cpm-activity ul li:before {
   position: relative;
   left: -5px;
 }
-.cpm-projects-wrap {
-  margin-right: 370px;
-}
 .cpm-projects {
-  width: 100%;
-  float: left;
+  overflow: hidden;
+  margin-right: 370px;
 }
 .cpm-projects nav.cpm-new-project {
   left: -130px;
@@ -509,7 +506,6 @@ ul.cpm-activity ul li:before {
 }
 .cpm-current-tasks {
   float: right;
-  height: 300px;
   width: 350px;
   margin-top: 42px;
 }
