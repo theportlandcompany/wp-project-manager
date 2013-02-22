@@ -583,6 +583,18 @@ ul.cpm-activity ul li:before {
   font-style: italic;
   font-size: 12px;
 }
+.cpm-current-tasks span.tasks-loading,
+.cpm-current-tasks span.complete-task-loading {
+  float: right;
+  margin: 7px 3px 0;
+  background: url('../images/loading.gif') no-repeat;
+  height: 16px;
+  width: 16px;
+  display: none;
+}
+.cpm-current-tasks span.complete-task-loading {
+  margin: 0 0 0 7px;
+}
 /*--------------------------------------------------
 :: Message
 -------------------------------------------------- */

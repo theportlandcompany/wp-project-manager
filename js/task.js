@@ -149,6 +149,7 @@
                     '_wpnonce': CPM_Vars.nonce
                 };
 
+            $(this).siblings('span.complete-task-loading').show();
 
             $.post(CPM_Vars.ajaxurl, data, function (res) {
                 res = JSON.parse(res);
@@ -156,6 +157,8 @@
                 if(res.success === true ) {
                     list.remove();
                 }
+
+                $(this).siblings('span.complete-task-loading').hide();
             });
         },
 
@@ -367,12 +370,16 @@
                     '_wpnonce': CPM_Vars.nonce
                 };
 
+            $('.cpm-current-tasks span.tasks-loading').show();
+
             $.post(CPM_Vars.ajaxurl, data, function (res) {
                 res = JSON.parse(res);
 
                 if(res.success === true) {
                     taskListCon.html(res.content);
                 }
+
+                $('.cpm-current-tasks span.tasks-loading').hide();
             });
         }
     };

@@ -801,6 +801,7 @@ function cpm_current_tasks_metabox( $user_id = 1 ) {
                     $metabox .= '<option value="'. $user->ID .'" '. $selected .'>'. $user->display_name .'</option>';
                     }
                 $metabox .= '</select>';
+                $metabox .= '<span class="tasks-loading"></span>';
             $metabox .= '</header>';
             $metabox .= '<div class="cpm-todos">';
                 $metabox .= cpm_current_tasks( $tasks );
@@ -836,6 +837,7 @@ function cpm_current_tasks( $tasks ) {
             $list .= '<a href="'. cpm_url_single_task( $project_id, $list_id , $task->ID ) .'" target="_blank"><span class="project-title">'. __( $project_title, 'cpm' ) .' &#45; </span>'. __( $task->post_content, 'cpm' ) .'</a>';
             if ( $due_date ) {
             $list .= '<span class="cpm-due-date">'. cpm_get_date( $due_date ) .'</span>';
+            $list .= '<span class="complete-task-loading"></span>';
             }
         $list .= '</li>';
     }
