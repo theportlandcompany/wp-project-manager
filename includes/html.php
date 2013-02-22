@@ -786,7 +786,7 @@ function cpm_activity_html( $activities ) {
 function cpm_current_tasks_metabox( $user_id = 1 ) { 
     $task_obj = CPM_Task::getInstance(); 
     $tasks = $task_obj->get_tasks_by_user( $user_id );
-    $users = get_users();
+    $users = get_users( 'orderby=display_name' );
     $current_user_id = get_current_user_id();
     $disabled = current_user_can( 'activate_plugins' ) ? '' : 'disabled';
 
