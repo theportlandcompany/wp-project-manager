@@ -819,6 +819,10 @@ function cpm_current_tasks_metabox( $user_id = 1 ) {
  * @return string
  */
 function cpm_current_tasks( $tasks ) { 
+    if ( !$tasks ) {
+        return '<p class="no-tasks">No tasks are currently assigned to this user...</p>';
+    }
+
     $list = '';
     $list .= '<ul>';
     foreach ( $tasks as $task ) {

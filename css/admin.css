@@ -577,6 +577,12 @@ ul.cpm-activity ul li:before {
   display: inline-block;
   margin-bottom: 10px;
 }
+.cpm-current-tasks p.no-tasks {
+  padding: 8px 10px;
+  color: #7D7D7D;
+  font-style: italic;
+  font-size: 12px;
+}
 /*--------------------------------------------------
 :: Message
 -------------------------------------------------- */
