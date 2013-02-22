@@ -787,15 +787,18 @@ function cpm_current_tasks_metabox( $user_id = 1 ) {
     $task_obj = CPM_Task::getInstance(); 
     $tasks = $task_obj->get_tasks_by_user( $user_id );
     $users = get_users();
+    $current_user_id = get_current_user_id();
+    $disabled = current_user_can( 'activate_plugins' ) ? '' : 'disabled';
 
     $metabox = '';
     $metabox .= '<div class="cpm-current-tasks">';
         $metabox .= '<div class="postbox">';
             $metabox .= '<header class="clearfix">';
                 $metabox .= '<h3><span>'. __( 'Current Tasks', 'cpm' ) .'</span></h3>';
-                $metabox .= '<select class="users-dropdown">';
+                $metabox .= '<select class="users-dropdown" '. $disabled .'>';
                     foreach ( $users as $user ) {
-                    $metabox .= '<option value="'. $user->ID .'">'. $user->display_name .'</option>';
+                    $selected = $current_user_id == $user->ID ? 'selected' : '';
+                    $metabox .= '<option value="'. $user->ID .'" '. $selected .'>'. $user->display_name .'</option>';
                     }
                 $metabox .= '</select>';
             $metabox .= '</header>';
