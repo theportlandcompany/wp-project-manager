@@ -795,7 +795,7 @@ function cpm_current_tasks_metabox( $user_id = 1 ) {
                 $metabox .= '<h3><span>'. __( 'Current Tasks', 'cpm' ) .'</span></h3>';
                 $metabox .= '<select class="users-dropdown">';
                     foreach ( $users as $user ) {
-                    $metabox .= '<option value="'. $user->ID .'">'. $user->user_nicename .'</option>';
+                    $metabox .= '<option value="'. $user->ID .'">'. $user->display_name .'</option>';
                     }
                 $metabox .= '</select>';
             $metabox .= '</header>';

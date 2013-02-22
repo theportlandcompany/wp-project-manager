@@ -255,13 +255,14 @@ class CPM_Task {
     function get_tasks_by_user( $user_id ) {
         global $wpdb;
 
-        $sql = "SELECT * FROM $wpdb->posts"; 
-        $sql .= " INNER JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id";
+        $sql = "SELECT * FROM $wpdb->postmeta";
+        $sql .= " INNER JOIN $wpdb->posts ON $wpdb->postmeta.post_id = $wpdb->posts.ID";
         $sql .= " WHERE $wpdb->posts.post_type = 'task'";
+        $sql .= " AND $wpdb->posts.post_parent IN ( SELECT `ID` FROM $wpdb->posts WHERE `post_type` = 'task_list' AND `post_parent` IN ( SELECT `ID` FROM $wpdb->posts WHERE `post_status` = 'publish' AND `post_type` = 'project' ) )";
         $sql .= " AND $wpdb->postmeta.post_id IN ( SELECT `post_id` FROM $wpdb->postmeta WHERE $wpdb->postmeta.meta_key = '_completed' AND $wpdb->postmeta.meta_value = '0' )";
         $sql .= " AND $wpdb->postmeta.post_id IN ( SELECT `post_id` FROM $wpdb->postmeta WHERE $wpdb->postmeta.meta_key = '_assigned' AND $wpdb->postmeta.meta_value = '%s' )";
         $sql .= " GROUP BY $wpdb->posts.ID";
-        $sql .= " ORDER BY $wpdb->postmeta.post_id ASC";
+        $sql .= " ORDER BY $wpdb->posts.post_date ASC";
 
         $tasks = $wpdb->get_results( sprintf( $sql, $user_id ) );
 
