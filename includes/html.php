@@ -427,14 +427,28 @@ function cpm_show_attachments( $object, $project_id ) {
         <ul class="cpm-attachments">
             <?php
             foreach ($object->files as $file) {
+            
+            	$file_url = sprintf( '%s&file_id=%d&project_id=%d', $base_url, $file['id'], $project_id );
+                $extension = substr( strrchr( $file['url'], '.' ), 1 );
+                
                 if( $file['type'] == 'image' ) {
-                    $thumb_url = sprintf( '%s&file_id=%d&project_id=%d&type=thumb', $base_url, $file['id'], $project_id );
+                    /* $thumb_url = sprintf( '%s&file_id=%d&project_id=%d&type=thumb', $base_url, $file['id'], $project_id ); */
+                    $image = '<img src="' . $file['thumb'] . '" />';
+                    
                 } else {
-                    $thumb_url = $file['thumb'];
+                    
+					$image = '<div class="image"></div>';                    
                 }
-
-                $file_url = sprintf( '%s&file_id=%d&project_id=%d', $base_url, $file['id'], $project_id );
-                printf( '<li><a href="%s" target="_blank"><img src="%s" /></a></li>', $file_url, $thumb_url );
+                
+                printf( '
+	                <li class="wppm-title">
+	                	<a href="%s" target="_blank">
+	                		<span class="wppm-file-title">' . $file['name'] . '</span>
+	                		' . $image . '
+	                		<span class="wppm-file-extensions">' . $extension . '</span>
+	                	</a>
+	                </li>
+                ', $file_url, $thumb_url );
             }
             ?>
         </ul>
