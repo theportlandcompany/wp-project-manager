@@ -12,7 +12,7 @@ class CPM_Notification {
         
         add_action( 'cpm_task_new', array($this, 'new_task'), 10, 3 );
         add_action( 'cpm_task_update', array($this, 'new_task'), 10, 3 );
-        add_action( 'cpm_task_complete', array($this, 'complete_task'), 10, 3 );
+        add_action( 'cpm_task_complete', array($this, 'complete_task'), 10, 1 );
     }
 
     function prepare_contacts() {
