@@ -287,10 +287,26 @@ class CPM_Task {
      * Get all tasks based on a task list
      *
      * @param int $list_id
+     * @param int $user_id
      * @return object object array of the result set
      */
-    function get_tasks( $list_id ) {
-        $tasks = get_children( array('post_parent' => $list_id, 'post_type' => 'task', 'order' => 'ASC') );
+    function get_tasks( $list_id, $user_id ) {
+        global $wpdb;
+
+        $sql = "SELECT * FROM $wpdb->posts";
+        $sql .= " INNER JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id";
+        $sql .= " WHERE $wpdb->posts.post_type = 'task'";
+        $sql .= " AND $wpdb->posts.post_parent IN ( SELECT `ID` FROM $wpdb->posts WHERE `post_type` = 'task_list' AND `ID` = '%s' )";
+        if ( !current_user_can( 'activate_plugins' ) ) {
+            $sql .= " AND $wpdb->postmeta.post_id IN ( SELECT `post_id` FROM $wpdb->postmeta WHERE $wpdb->postmeta.meta_key = '_assigned' AND $wpdb->postmeta.meta_value = '%s' )";
+        }
+        $sql .= " GROUP BY $wpdb->posts.ID";
+
+        if ( !current_user_can( 'activate_plugins' ) ) {
+            $tasks = $wpdb->get_results( sprintf( $sql, $list_id, $user_id ) );
+        } else {
+            $tasks = $wpdb->get_results( sprintf( $sql, $list_id ) );
+        }
 
         foreach ($tasks as $key => $task) {
             $this->set_task_meta( $task );

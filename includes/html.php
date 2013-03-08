@@ -248,7 +248,7 @@ function cpm_task_list_html( $list, $project_id ) {
 
         <ul class="cpm-todos">
             <?php
-            $tasks = $task_obj->get_tasks( $list->ID );
+            $tasks = $task_obj->get_tasks( $list->ID, get_current_user_id() );
             $tasks = cpm_tasks_filter( $tasks );
 
             if ( $tasks['pending'] ) {
