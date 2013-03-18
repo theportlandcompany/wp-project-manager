@@ -791,7 +791,7 @@ function cpm_activity_html( $activities ) {
 }
 
 /**
- * Prints Current Tasks Metabox
+ * Prints Priority Tasks Metabox
  *
  * @since 0.3.1.tpc-0.1
  * @param int $user_id
@@ -800,62 +800,28 @@ function cpm_activity_html( $activities ) {
 function cpm_current_tasks_metabox( $user_id = 1 ) { 
     $task_obj = CPM_Task::getInstance(); 
     $tasks = $task_obj->get_tasks_by_user( $user_id );
-    $users = get_users( 'orderby=display_name' );
-    $current_user_id = get_current_user_id();
-    $disabled = current_user_can( 'activate_plugins' ) ? '' : 'disabled';
 
-    $metabox = '';
-    $metabox .= '<div class="cpm-current-tasks">';
-        $metabox .= '<div class="postbox">';
-            $metabox .= '<header class="clearfix">';
-                $metabox .= '<h3><span>'. __( 'Current Tasks', 'cpm' ) .'</span></h3>';
-                $metabox .= '<select class="users-dropdown" '. $disabled .'>';
-                    foreach ( $users as $user ) {
-                    $selected = $current_user_id == $user->ID ? 'selected' : '';
-                    $metabox .= '<option value="'. $user->ID .'" '. $selected .'>'. $user->display_name .'</option>';
-                    }
-                $metabox .= '</select>';
-                $metabox .= '<span class="tasks-loading"></span>';
-            $metabox .= '</header>';
-            $metabox .= '<div class="cpm-todos">';
-                $metabox .= cpm_current_tasks( $tasks );
-            $metabox .= '</div>';
-        $metabox .= '</div>';
-    $metabox .= '</div>';
-
-    echo $metabox;
-}
-
-/**
- * Prints Current Tasks list
- *
- * @since 0.3.1.tpc-0.1
- * @param array $tasks
- * @return string
- */
-function cpm_current_tasks( $tasks ) { 
-    if ( !$tasks ) {
-        return '<p class="no-tasks">No tasks are currently assigned to this user...</p>';
-    }
-
-    $list = '';
-    $list .= '<ul>';
-    foreach ( $tasks as $task ) {
-        $due_date =  get_post_meta( $task->ID, '_due', true );
-        $list_id =  get_post_field( 'post_parent', $task->ID );
-        $project_id =  get_post_field( 'post_parent', $list_id );
-        $project_title = get_post_field( 'post_title', $project_id );
-        
-        $list .= '<li>';
-            $list .= '<input type="checkbox" data-list="'. $list_id .'" data-project="'. $project_id .'" value="'. $task->ID .'" name="task" />';
-            $list .= '<a href="'. cpm_url_single_task( $project_id, $list_id , $task->ID ) .'" target="_blank"><span class="project-title">'. __( $project_title, 'cpm' ) .' &#45; </span>'. __( $task->post_content, 'cpm' ) .'</a>';
-            if ( $due_date ) {
-            $list .= '<span class="cpm-due-date">'. cpm_get_date( $due_date ) .'</span>';
-            $list .= '<span class="complete-task-loading"></span>';
-            }
-        $list .= '</li>';
-    }
-    $list .= '</ul>';
-
-    return $list;
+    ?>
+    <div class="cpm-current-tasks">
+        <div class="postbox">
+            <h3><span><?php _e( 'Current Tasks', 'cpm' ); ?></span></h3>
+            <ul class="cpm-todos">
+            <?php $count = 0; ?>
+            <?php foreach ( $tasks as $task ) { ?>
+                <?php $due_date =  get_post_meta( $task->ID, '_due', true ); ?>
+                <?php $list_id =  get_post_field( 'post_parent', $task->ID ); ?>
+                <?php $project_id =  get_post_field( 'post_parent', $list_id ); ?>
+                <?php $project_title = get_post_field( 'post_title', $project_id ); ?>
+                <li class="<?php echo ++$count == count($tasks) ? 'last' : ''; ?>">
+                    <input type="checkbox" data-list="<?php echo $list_id; ?>" data-project="<?php echo $project_id; ?>" value="<?php echo $task->ID; ?>" name="task" />
+                    <a href="<?php echo cpm_url_single_task( $project_id, $list_id , $task->ID ); ?>" target="_blank"><span class="project-title"><?php _e( $project_title, 'cpm' ) ?> &#45;</span> <?php _e( $task->post_content, 'cpm' ); ?></a>
+                    <?php if ( $due_date ) { ?>
+                        <span class="cpm-due-date"><?php echo cpm_get_date( $due_date ); ?></span>
+                    <?php } ?>
+                </li>
+            <?php } ?>
+            </ul>
+        </div>
+    </div>
+    <?php
 }
