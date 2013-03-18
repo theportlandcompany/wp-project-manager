@@ -12,6 +12,7 @@ class CPM_Notification {
         
         add_action( 'cpm_task_new', array($this, 'new_task'), 10, 3 );
         add_action( 'cpm_task_update', array($this, 'new_task'), 10, 3 );
+        add_action( 'cpm_task_complete', array($this, 'complete_task'), 10, 1 );
     }
 
     function prepare_contacts() {
@@ -158,6 +159,38 @@ class CPM_Notification {
         $message = sprintf( 'A new task has been assigned to you' ) . "\r\n\n";
 
         $this->send( $to, $subject, $message );
+    }
+
+     /**
+     * Notify users upon task completion
+     *
+     * @uses `cpm_task_complete` hook
+     * @param int $task_id
+     */
+    function complete_task( $task_id ) {
+        $task_obj = CPM_Task::getInstance();
+        $task = $task_obj->get_task( $task_id );
+
+        $list_id = get_post_field( 'post_parent', $task_id );
+        $project_id = get_post_field( 'post_parent', $list_id );
+
+        $project_obj = CPM_Project::getInstance();
+        $co_workers = $project_obj->get_users( $project_id );
+        $users = array();
+
+        foreach ($co_workers as $user) {
+            $users[$user['id']] = sprintf( '%s <%s>', $user['name'], $user['email'] );
+        }
+
+        //if any users left, get their mail addresses and send mail
+        if ( $users ) {
+
+            $site_name = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+            $subject = sprintf( __( 'Task "%s" has been marked completed', 'cpm' ), $task->post_content );
+            $message .= sprintf( __( 'You can review the task by going here: %s', 'cpm' ), cpm_url_single_task( $project_id, $list_id , $task_id ) ) . "\r\n";
+
+            $this->send( implode(', ', $users), $subject, $message );
+        }
     }
 
     function send( $to, $subject, $message ) {

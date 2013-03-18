@@ -17,7 +17,6 @@ class CPM_Ajax {
         add_action( 'wp_ajax_cpm_project_new', array($this, 'project_new') );
         add_action( 'wp_ajax_cpm_project_update', array($this, 'project_edit') );
         add_action( 'wp_ajax_cpm_project_delete', array($this, 'project_delete') );
-        add_action( 'wp_ajax_cpm_project_complete', array($this, 'project_complete') );
         add_action( 'wp_ajax_cpm_project_change_status', array($this, 'project_change_status') );
         add_action( 'wp_ajax_cpm_project_trash', array($this, 'project_trash') );
 
