@@ -290,14 +290,14 @@ class CPM_Task {
      * @param int $user_id
      * @return object object array of the result set
      */
-    function get_tasks( $list_id, $user_id ) {
+    function get_tasks( $list_id, $user_id = 0 ) {
         global $wpdb;
 
         $sql = "SELECT * FROM $wpdb->posts";
         $sql .= " INNER JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id";
         $sql .= " WHERE $wpdb->posts.post_type = 'task'";
         $sql .= " AND $wpdb->posts.post_parent IN ( SELECT `ID` FROM $wpdb->posts WHERE `post_type` = 'task_list' AND `ID` = '%s' )";
-        if ( !current_user_can( 'activate_plugins' ) ) {
+        if ( !current_user_can( 'activate_plugins' ) && $user_id ) {
             $sql .= " AND $wpdb->postmeta.post_id IN ( SELECT `post_id` FROM $wpdb->postmeta WHERE $wpdb->postmeta.meta_key = '_assigned' AND $wpdb->postmeta.meta_value = '%s' )";
         }
         $sql .= " GROUP BY $wpdb->posts.ID";
