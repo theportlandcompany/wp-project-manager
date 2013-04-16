@@ -189,7 +189,7 @@ class CPM_Notification {
         if ( $users ) {
 
             $site_name = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
-            $subject = sprintf( __( 'Task completed', 'cpm' ), $task->post_content );
+            $subject = sprintf( __( 'Task Completed', 'cpm' ), $task->post_content );
             $message .= sprintf( __( 'You can review the task by going here: %s', 'cpm' ), cpm_url_single_task( $project_id, $list_id , $task_id ) ) . "\r\n";
 
             $this->send( implode(', ', $users), $subject, $message );
