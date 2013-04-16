@@ -179,6 +179,9 @@ class CPM_Notification {
         $users = array();
 
         foreach ($co_workers as $user) {
+            if ( $user['id'] == get_current_user_id() )
+                continue;
+
             $users[$user['id']] = sprintf( '%s <%s>', $user['name'], $user['email'] );
         }
 
@@ -186,7 +189,7 @@ class CPM_Notification {
         if ( $users ) {
 
             $site_name = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
-            $subject = sprintf( __( 'Task "%s" has been marked completed', 'cpm' ), $task->post_content );
+            $subject = sprintf( __( 'Task completed', 'cpm' ), $task->post_content );
             $message .= sprintf( __( 'You can review the task by going here: %s', 'cpm' ), cpm_url_single_task( $project_id, $list_id , $task_id ) ) . "\r\n";
 
             $this->send( implode(', ', $users), $subject, $message );
