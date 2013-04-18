@@ -152,6 +152,11 @@ class CPM_Notification {
             return;
         }
 
+        // if task is assigned to self
+        if ( intval( $_POST['task_assign'] ) == get_current_user_id() ) {
+            return;
+        }
+
         $user = get_user_by( 'id', intval( $_POST['task_assign'] ) );
         $to = sprintf( '%s <%s>', $user->display_name, $user->user_email );
 
