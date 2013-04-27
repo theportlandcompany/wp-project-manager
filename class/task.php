@@ -262,9 +262,8 @@ class CPM_Task {
         $sql .= " AND $wpdb->postmeta.post_id IN ( SELECT `post_id` FROM $wpdb->postmeta WHERE $wpdb->postmeta.meta_key = '_completed' AND $wpdb->postmeta.meta_value = '0' )";
         $sql .= " AND $wpdb->postmeta.post_id IN ( SELECT `post_id` FROM $wpdb->postmeta WHERE $wpdb->postmeta.meta_key = '_assigned' AND $wpdb->postmeta.meta_value = '%s' )";
         $sql .= " AND $wpdb->postmeta.meta_key = '_due'";
-        $sql .= " AND CAST( $wpdb->postmeta.meta_value AS DATE )";
         $sql .= " GROUP BY $wpdb->posts.ID";
-        $sql .= " ORDER BY $wpdb->postmeta.meta_value ASC";
+        $sql .= " ORDER BY $wpdb->posts.ID ASC, CAST( $wpdb->postmeta.meta_value AS DATE ) ASC";
 
         $tasks = $wpdb->get_results( sprintf( $sql, $user_id ) );
 
