@@ -186,8 +186,8 @@
                     res = JSON.parse(res);
 
                     if(res.success === true) {
-                        var currentList = self.closest('ul.cpm-todos-new').siblings('.cpm-todos');
-                        currentList.append( '<li>' + res.content + '</li>' );
+                          var currentList = self.closest('.cpm-todolist');
+                          currentList.append( '<li>' + res.content + '</li>' );
 
                         //clear the form
                         self.find('textarea, input[type=text], select').val('');
