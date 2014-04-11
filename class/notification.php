@@ -49,8 +49,8 @@ class CPM_Notification {
 
                 $site_name = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
                 $subject = sprintf( __( 'New Project invitation on %s', 'cpm' ), $site_name );
-                $message = sprintf( __( 'You are assigned in a new project "%s" on %s', 'cpm' ), trim( $data['post_title'] ), $site_name ) . "\r\n";
-                $message .= sprintf( __( 'You can see the project by going here: %s', 'cpm' ), cpm_url_project_details( $project_id ) ) . "\r\n";
+                $message = sprintf( __( 'You have been added as a Contributor on "%s" on %s', 'cpm' ), trim( $data['post_title'] ), $site_name ) . "\r\n";
+                $message .= sprintf( __( '<a href="%s">View Project »</a>', 'cpm' ), cpm_url_project_details( $project_id ) ) . "\r\n";
 
                 $this->send( implode(', ', $users), $subject, $message );
             }
@@ -85,8 +85,8 @@ class CPM_Notification {
         if ( $users ) {
 
             $site_name = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
-            $subject = sprintf( __( 'Project "%s" has been marked completed', 'cpm' ), $project->post_title );
-            $message .= sprintf( __( 'Project <a href="%s">"%s"</a> was marked as complete by %s.', 'cpm' ), cpm_url_project_details( $project_id ), $project->post_title, $current_user_data->display_name );
+            $subject = sprintf( __( '"%s" Project has been marked completed', 'cpm' ), $project->post_title );
+            $message .= sprintf( __( 'The Project "<a href="%s">"%s"</a>" was marked as complete by %s.', 'cpm' ), cpm_url_project_details( $project_id ), $project->post_title, $current_user_data->display_name );
 
             $this->send( implode(', ', $users), $subject, $message );
         }
@@ -149,6 +149,11 @@ class CPM_Notification {
     }
 
     function new_task( $list_id, $task_id, $data ) {
+        $task_obj = CPM_Task::getInstance();
+        $task = $task_obj->get_task( $task_id );
+
+        $list_id = get_post_field( 'post_parent', $task_id );
+        $project_id = get_post_field( 'post_parent', $list_id );
 
         //notification is not selected or no one is assigned
         if ( $_POST['task_assign'] == '-1' ) {
@@ -163,8 +168,8 @@ class CPM_Notification {
         $user = get_user_by( 'id', intval( $_POST['task_assign'] ) );
         $to = sprintf( '%s <%s>', $user->display_name, $user->user_email );
 
-        $subject = sprintf( __( '[%s] New task assigned to you', 'cpm' ), __( 'Project Manager', 'cpm' ) );
-        $message = sprintf( 'A new task has been assigned to you' ) . "\r\n\n";
+        $subject = sprintf( __( '%s » %s » New Task Assigned.', 'cpm' ), get_post_field( 'post_title', $project_id ), get_post_field( 'post_title', $list_id ) );
+        $message = sprintf( __('Project: <a href="%s">%s</a> » Task List: <a href="%s">%s</a> » Task: <a href="%s">#%s: %s</a>' ), cpm_url_project_details( $project_id ), get_post_field( 'post_title', $project_id ), cpm_url_single_tasklist( $project_id, $list_id ), get_post_field( 'post_title', $list_id ), $task_id, cpm_url_single_task( $project_id, $list_id, $task_id ), get_post_field( 'post_content', $project_id ) . "\r\n\n");
 
         $this->send( $to, $subject, $message );
     }

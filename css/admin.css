@@ -32,7 +32,6 @@
     color: #000;
     opacity: .75;
 }
-
 input[type='text'], textarea, select {
     width: 100% !important;
     margin-bottom: 5px;
@@ -515,6 +514,21 @@ ul.cpm-activity ul li:before {
   -moz-border-radius: 50%;
   border-radius: 50%;
   margin-right: 5px;
+}
+.cpm-current-tasks, .cpm-priority-tasks, .cpm-current-tasks .postbox, .cpm-priority-tasks .postbox {
+    float: left;
+    width: 100%;
+}
+.cpm-current-tasks select, .cpm-priority-tasks select {
+    float: right;
+    margin: 0 20px 0 0;
+    width: 150px !important;
+}
+.cpm-current-tasks-wrapper h3 {
+    border: none;
+}
+.cpm-current-tasks-wrapper h3 span {
+    padding: 15px 0 0 0 !important;
 }
 .cpm-current-tasks-wrapper {
   position: absolute;
