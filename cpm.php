@@ -1,12 +1,12 @@
 <?php
-/**
- * Plugin Name: WP Project Manager
- * Plugin URI: http://www.theportlandcompany.com/shop/product-category/custom-wordpress-plugins/wp-project-manageer
- * Description: A fork of WP Project Management by Tareq Hasan.
- * Author: The Portland Company
- * Author URI: http://www.theportlandcompany.com
- * Version: 1.0.0
- */
+/*
+Plugin Name: Project Manager by TPC
+Plugin URI: http://www.theportlandcompany.com/shop/product-category/custom-wordpress-plugins/wp-project-manageer
+Description: A fork of WP Project Management by Tareq Hasan.
+Author: The Portland Company
+Author URI: http://www.theportlandcompany.com
+Version: 1.0.1
+*/
 
 /**
  * Autoload class files on demand
