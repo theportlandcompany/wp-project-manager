@@ -975,7 +975,9 @@ function cpm_current_tasks_metabox( $user_id = 1 ) {
             </header>
             
             <span class="tasks-loading"></span>
+            <div class="cpm-todos inside">
             <?php echo cpm_current_tasks( $tasks ) ?>
+            </div>
             
         </div>
     </div>
