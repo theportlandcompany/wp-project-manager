@@ -7,6 +7,10 @@
  * @package CPM
  */
 
+
+
+
+
 /**
  * HTML generator for single task
  *
@@ -100,6 +104,10 @@ function cpm_task_html( $task, $project_id, $list_id, $single = false ) {
     return ob_get_clean();
 }
 
+
+
+
+
 /**
  * HTML form generator for new/update task form
  *
@@ -163,6 +171,10 @@ function cpm_task_new_form( $list_id, $project_id, $task = null, $single = false
     <?php
 }
 
+
+
+
+
 /**
  * HTML generator for new/edit tasklist form
  *
@@ -222,6 +234,10 @@ function cpm_tasklist_form( $project_id, $list = null ) {
     <?php
     return ob_get_clean();
 }
+
+
+
+
 
 /**
  * HTML generator for a single tasklist
@@ -311,6 +327,10 @@ function cpm_task_list_html( $list, $project_id ) {
     return ob_get_clean();
 }
 
+
+
+
+
 /**
  * Comment form
  *
@@ -375,6 +395,10 @@ function cpm_comment_form( $project_id, $object_id = 0, $comment = null ) {
     return ob_get_clean();
 }
 
+
+
+
+
 /**
  * Generates markup for displaying a single comment
  *
@@ -430,6 +454,10 @@ function cpm_show_comment( $comment, $project_id, $class = '' ) {
     return ob_get_clean();
 }
 
+
+
+
+
 /**
  * Helper function for displaying all the attachments for a single comment,
  * messages, and etc.
@@ -464,6 +492,10 @@ function cpm_show_attachments( $object, $project_id ) {
 
     return ob_get_clean();
 }
+
+
+
+
 
 /**
  * Generates message new/edit form
@@ -540,6 +572,10 @@ function cpm_message_form( $project_id, $message = null ) {
     return ob_get_clean();
 }
 
+
+
+
+
 /**
  * Generates milestone new/edit form
  *
@@ -604,6 +640,10 @@ function cpm_milestone_form( $project_id, $milestone = null ) {
     <?php
     return ob_get_clean();
 }
+
+
+
+
 
 /**
  * Generates markup for a single milestone
@@ -708,6 +748,10 @@ function cpm_show_milestone( $milestone, $project_id ) {
     <?php
 }
 
+
+
+
+
 /**
  * Generates markup for add/edit project form
  *
@@ -767,6 +811,10 @@ function cpm_project_form( $project = null ) {
     <?php
 }
 
+
+
+
+
 /**
  * Prints project activities
  *
@@ -797,6 +845,106 @@ function cpm_activity_html( $activities ) {
     return $html;
 }
 
+/*
+*
+* Replaces get_users() so you can pass multiple Roles.
+*
+*/
+function get_clients() { 
+
+    $users = array();
+    $roles = array( 'administrator', 'developer', 'client' );
+
+    foreach ($roles as $role) :
+        $users_query = new WP_User_Query( array( 
+            'fields' => 'all_with_meta', 
+            'role' => $role, 
+            'orderby' => 'display_name'
+            ) );
+        $results = $users_query->get_results();
+        if ($results) $users = array_merge($users, $results);
+    endforeach;
+
+    return $users;
+}
+
+/**
+ * Prints Priority Tasks Metabox
+ *
+ * @since 0.3.1.tpc-0.1
+ * @param int $user_id
+ * @return string
+ */
+function cpm_priority_tasks_metabox( $user_id = 1 ) { 
+    $task_obj = CPM_Task::getInstance(); 
+    $tasks = $task_obj->get_tasks_by_priority( $user_id );
+    $users = get_clients( 'orderby=display_name' );
+    $disabled = current_user_can( 'activate_plugins' ) ? '' : 'disabled';
+
+    ob_start();
+    ?>
+    <div class="cpm-priority-tasks">
+        <div class="postbox">
+            <header class="clearfix">
+                <h3>
+                    <span><?php  _e( 'Manual Priorities', 'cpm' ) ?></span>
+                    
+                    <select class="users-dropdown" <?php echo $disabled ?>>
+                        <?php  foreach ( $users as $user ) : $selected = $user_id == $user->ID ? 'selected' : '';?>
+                            <option value="<?php echo $user->ID ?>" <?php echo $selected ?>><?php echo $user->display_name ;?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </h3>
+            </header>
+            
+            <span class="tasks-loading"></span>
+            <?php echo cpm_priority_tasks( $tasks ) ?>
+            
+        </div>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+
+/**
+ * Prints Priority Tasks list
+ *
+ * @since 0.3.1.tpc-0.1
+ * @param array $tasks
+ * @return string
+ */
+function cpm_priority_tasks( $tasks ) { 
+    ob_start();
+    ?>
+    
+    <ul id="priority-tasks" class="connected">
+    <?php if ( !$tasks ) : ?>
+        <p class="no-tasks">No tasks are currently assigned to this user...</p>
+    <?php else: ?>
+
+        <?php foreach ( $tasks as $task ) : ?>
+            <?php
+            $due_date =  get_post_meta( $task->ID, '_due', true );
+            $list_id =  get_post_field( 'post_parent', $task->ID );
+            $project_id =  get_post_field( 'post_parent', $list_id );
+            $project_title = get_post_field( 'post_title', $project_id );
+            ?>
+            <li>
+                <input type="checkbox" data-list="<?php echo $list_id ?>" data-project="<?php echo $project_id ?>" value="<?php echo $task->ID ?>" name="task" />
+                <a href="<?php echo cpm_url_single_task( $project_id, $list_id , $task->ID ) ?>" target="_blank"><span class="project-title"><?php _e( $project_title, 'cpm' ) ?> &#45; </span><?php _e( $task->post_content, 'cpm' ) ?></a>
+                <?php if ( $due_date ) : ?>
+                    <span class="cpm-due-date"><?php echo cpm_get_date( $due_date ) ?></span>
+                <?php endif; ?>
+                <span class="complete-task-loading"></span>
+            </li>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    </ul>
+    
+    <?php
+    return ob_get_clean();
+}
+
 /**
  * Prints Current Tasks Metabox
  *
@@ -807,7 +955,7 @@ function cpm_activity_html( $activities ) {
 function cpm_current_tasks_metabox( $user_id = 1 ) { 
     $task_obj = CPM_Task::getInstance(); 
     $tasks = $task_obj->get_tasks_by_user( $user_id );
-    $users = get_users( 'orderby=display_name' );
+    $users = get_clients( 'orderby=display_name' );
     $disabled = current_user_can( 'activate_plugins' ) ? '' : 'disabled';
 
     ob_start();
@@ -815,17 +963,20 @@ function cpm_current_tasks_metabox( $user_id = 1 ) {
     <div class="cpm-current-tasks">
         <div class="postbox">
             <header class="clearfix">
-                <h3><span><?php  _e( 'Current Tasks', 'cpm' ) ?></span></h3>
-                <select class="users-dropdown" <?php echo $disabled ?>>
-                <?php  foreach ( $users as $user ) : $selected = $user_id == $user->ID ? 'selected' : '';?>
-                    <option value="<?php echo $user->ID ?>" <?php echo $selected ?>><?php echo $user->display_name ;?></option>
-                <?php endforeach; ?>
-                </select>
-                <span class="tasks-loading"></span>
+                <h3>
+                    <span><?php  _e( 'Current Tasks', 'cpm' ) ?></span>
+                    
+                    <select class="users-dropdown" <?php echo $disabled ?>>
+                        <?php foreach ( $users as $user ) : $selected = $user_id == $user->ID ? 'selected' : '';?>
+                            <option value="<?php echo $user->ID ?>" <?php echo $selected ?>><?php echo $user->display_name ;?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </h3>
             </header>
-            <div class="cpm-todos inside">
-                <?php echo cpm_current_tasks( $tasks ) ?>
-            </div>
+            
+            <span class="tasks-loading"></span>
+            <?php echo cpm_current_tasks( $tasks ) ?>
+            
         </div>
     </div>
     <?php
@@ -867,89 +1018,6 @@ function cpm_current_tasks( $tasks ) {
     </ul>
     
     <?php endif; ?>
-    <?php
-    return ob_get_clean();
-}
-
-/**
- * Prints Priority Tasks Metabox
- *
- * @since 0.3.1.tpc-0.1
- * @param int $user_id
- * @return string
- */
-function cpm_priority_tasks_metabox( $user_id = 1 ) { 
-    $task_obj = CPM_Task::getInstance(); 
-    $tasks = $task_obj->get_tasks_by_priority( $user_id );
-    $users = get_users( 'orderby=display_name' );
-    $disabled = current_user_can( 'activate_plugins' ) ? '' : 'disabled';
-
-    ob_start();
-    ?>
-    <div class="cpm-priority-tasks">
-        <div class="postbox">
-            <header class="clearfix">
-            
-                <h3>
-                    <span><?php  _e( 'Manual Priorities', 'cpm' ) ?></span>
-            
-                    <select class="users-dropdown" <?php echo $disabled ?>>            
-                        <?php  foreach ( $users as $user ) : $selected = $user_id == $user->ID ? 'selected' : '';?>
-                            <option value="<?php echo $user->ID ?>" <?php echo $selected ?>><?php echo $user->display_name ;?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </h3>
-                
-                <span class="tasks-loading"></span>
-                
-            </header>
-            
-            <div id="priority-tasks" class="cpm-todos inside">
-                <?php echo cpm_priority_tasks( $tasks ) ?>
-            </div><!-- end of #priority-tasks -->
-            
-        </div><!-- end of .postbox -->
-    </div>
-    <?php
-    return ob_get_clean();
-}
-
-/**
- * Prints Priority Tasks list
- *
- * @since 0.3.1.tpc-0.1
- * @param array $tasks
- * @return string
- */
-function cpm_priority_tasks( $tasks ) { 
-    ob_start();
-    ?>
-    
-    <ul id="priority-tasks" class="connected">
-    
-        <?php if ( !$tasks ) : ?>
-            <li class="no-tasks">No tasks are currently assigned to this user...</li>
-        <?php else: ?>
-
-        <?php foreach ( $tasks as $task ) : ?>
-            <?php
-            $due_date =  get_post_meta( $task->ID, '_due', true );
-            $list_id =  get_post_field( 'post_parent', $task->ID );
-            $project_id =  get_post_field( 'post_parent', $list_id );
-            $project_title = get_post_field( 'post_title', $project_id );
-            ?>
-            <li>
-                <input type="checkbox" data-list="<?php echo $list_id ?>" data-project="<?php echo $project_id ?>" value="<?php echo $task->ID ?>" name="task" />
-                <a href="<?php echo cpm_url_single_task( $project_id, $list_id , $task->ID ) ?>" target="_blank"><span class="project-title"><?php _e( $project_title, 'cpm' ) ?> &#45; </span><?php _e( $task->post_content, 'cpm' ) ?></a>
-                <?php if ( $due_date ) : ?>
-                    <span class="cpm-due-date"><?php echo cpm_get_date( $due_date ) ?></span>
-                <?php endif; ?>
-                <span class="complete-task-loading"></span>
-            </li>
-        <?php endforeach; ?>
-    <?php endif; ?>
-    </ul>
-    
     <?php
     return ob_get_clean();
 }

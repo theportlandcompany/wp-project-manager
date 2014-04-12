@@ -12,13 +12,13 @@ $projects = $project_obj->get_projects( -1, $post_status );
 </h2>
 
 <div class="cpm-cols">
-     <div class="cpm-current-tasks-wrapper">
-
-        <?php echo cpm_priority_tasks_metabox( $_COOKIE['cpm_priority_tasks_metabox_user'] ? $_COOKIE['cpm_priority_tasks_metabox_user'] : get_current_user_id() ); ?>
-
-        <?php echo cpm_current_tasks_metabox( $_COOKIE['cpm_current_tasks_metabox_user'] ? $_COOKIE['cpm_current_tasks_metabox_user'] : get_current_user_id() ); ?>
-
+    <div class="cpm-current-tasks-wrapper">
+        <?php
+            echo cpm_priority_tasks_metabox( $_COOKIE['cpm_priority_tasks_metabox_user'] ? $_COOKIE['cpm_priority_tasks_metabox_user'] : get_current_user_id() );
+            echo cpm_current_tasks_metabox( $_COOKIE['cpm_current_tasks_metabox_user'] ? $_COOKIE['cpm_current_tasks_metabox_user'] : get_current_user_id() );
+        ?>
     </div>
+    
     <div class="cpm-projects">
 
         <?php cpm_get_status_nav_menu( __( cpm_map_status( $post_status ), 'cpm' ) ); ?>
@@ -80,10 +80,6 @@ column-date sortable asc'  style=""><a href="sort-by-date-toggle"><span>Date</sp
                                 </div>
                             </td>           
                             <td class="author column-author"><a href="#author-filter"><?php echo $project->users[0]; ?></a></td>       
-                            <td class="comments column-comments">
-                                <div class="post-com-count-wrapper"><a href='#link-to-comments' title='Post Count' class='post-com-count'><span class='comment-count'>[count]</span></a></div>
-                            </td>
-                            <td class="date column-date"><abbr title="date">[created]</abbr><br />[published]</td>    
                         </tr>
                     <?php } ?>
 

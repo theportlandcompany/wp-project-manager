@@ -295,7 +295,6 @@ class CPM_Task {
 
         $sql = "SELECT `ID`, `post_content` FROM $wpdb->posts";
         $sql .= " INNER JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id";
-        $sql .= " INNER JOIN $wpdb->postmeta PMT2 ON $wpdb->postmeta.post_id = $wpdb->posts.ID";
         $sql .= " WHERE $wpdb->posts.post_type = 'task'";
         $sql .= " AND $wpdb->posts.post_parent IN ( SELECT `ID` FROM $wpdb->posts WHERE `post_type` = 'task_list' AND `post_parent` IN ( SELECT `ID` FROM $wpdb->posts WHERE `post_status` = 'publish' AND `post_type` = 'project' ) )";
         $sql .= " AND $wpdb->postmeta.post_id NOT IN ( SELECT `post_id` FROM $wpdb->postmeta WHERE $wpdb->postmeta.meta_key = '_priority' )";
