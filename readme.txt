@@ -4,7 +4,7 @@ Tags: project manager, project management, wp project manager, wp project manage
 Donate link: http://www.theportlandcompany.com/products-and-services/donate/
 Requires at least: 3.3
 Tested up to: 3.8.2
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPL v3
 License URI: https://www.gnu.org/copyleft/gpl.html
 
