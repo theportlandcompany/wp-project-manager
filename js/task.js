@@ -1,4 +1,4 @@
-;(function($) {
+(function($) {
 
     var CPM_Task = {
 
@@ -44,6 +44,7 @@
             $('ul.cpm-todolists').on('submit', '.cpm-list-edit-form form', this.updateList);
             $('.cpm-new-todolist-form').on('click', 'a.list-cancel', this.toggleNewTaskListForm);
             $('a#cpm-add-tasklist').on('click', this.toggleNewTaskListFormLink);
+            $('a#cpm-add-task').on('click', this.toggleNewTaskFormLink);
 
             //tasklist edit, delete links toggle
             $('ul.cpm-todolists').on('click', 'a.cpm-list-delete', this.deleteList);
@@ -178,7 +179,7 @@
 
             var self = $(this),
                 data = self.serialize(),
-                taskListEl = self.closest('article.cpm-todolist'),
+                taskListEl = self.closest('article.cpm-todolist').children('.cpm-todos'),
                 content = $.trim(self.find('.todo_content').val());
 
             if(content !== '') {
@@ -186,7 +187,7 @@
                     res = JSON.parse(res);
 
                     if(res.success === true) {
-                          var currentList = self.closest('.cpm-todolist');
+                          var currentList = taskListEl;
                           currentList.append( '<li>' + res.content + '</li>' );
 
                         //clear the form
@@ -285,6 +286,14 @@
             $('.cpm-new-todolist-form').slideToggle();
             $('.tasklist_detail').autosize({append: "\n"});
         },
+        
+        
+        toggleNewTaskFormLink: function (e) {
+            e.preventDefault();
+
+            $('.cpm-new-task-form').slideToggle();
+            $('.todo_content').autosize({append: "\n"});
+        },
 
         toggleNewTaskListForm: function (e) {
             e.preventDefault();
@@ -374,7 +383,7 @@
             e.preventDefault();
 
             var self = $(this),
-                taskListCon = self.closest('header').siblings('.cpm-todos'),
+                taskListCon = self.closest('header').siblings('.cpm-widgets'),
                 data = {
                     user_id: self.val(),
                     action: 'cpm_tasks_by_user',
@@ -405,7 +414,7 @@
             e.preventDefault();
 
             var self = $(this),
-                taskListCon = self.closest('header').siblings('.cpm-todos'),
+                taskListCon = self.closest('header').siblings('.cpm-widgets'),
                 data = {
                     user_id: self.val(),
                     action: 'cpm_tasks_by_priority',
@@ -438,7 +447,7 @@
 
             var self = $(this);
 
-            self.siblings('.cpm-todos').toggle(0);
+            self.siblings('.cpm-widgets').toggle(0);
         },
 
         truncateTasks: function(e) {

@@ -659,9 +659,8 @@ ul.cpm-activity ul li:before {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  padding: 10px;
-  margin-left: 0;
-  width: 500px;
+  padding: 10px 2%;
+  width: 96%;
 }
 .cpm-messages-table {
   font-size: 13px;
@@ -1085,9 +1084,20 @@ ul.cpm-activity ul li:before {
 .cpm-single-task .cpm-todo-wrap .cpm-task-edit-form {
   display: none;
 }
+.cpm-todolists {
+    width: inherit;
+}
 .cpm-todolists li {
     float: left;
     clear: left;
+    margin: 0 0 10px 0;
+    width: inherit;
+}
+.mce-edit-area {
+    height: 50px;
+}
+.mce-edit-area iframe {
+    height: inherit !important;
 }
 ul.cpm-todolists article.cpm-todolist {
     float: left;

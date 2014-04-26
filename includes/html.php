@@ -133,7 +133,7 @@ function cpm_task_new_form( $list_id, $project_id, $task = null, $single = false
         }
     }
     ?>
-    <form action="" method="post">
+    <form class="cpm-new-task-form" action="" method="post">
         <input type="hidden" name="list_id" value="<?php echo $list_id; ?>">
         <input type="hidden" name="project_id" value="<?php echo $project_id; ?>">
         <input type="hidden" name="action" value="<?php echo $action; ?>">
@@ -148,7 +148,27 @@ function cpm_task_new_form( $list_id, $project_id, $task = null, $single = false
             <tr>
                 <td>
                     <div class="item content">
-                        <textarea name="task_text" class="todo_content" cols="70" placeholder="<?php esc_attr_e( 'Task Description', 'cpm' ) ?>" rows="1"><?php echo esc_textarea( $task_content ); ?></textarea>
+                        <?php
+                        $wp_editor_settings = array(
+                            'teeny' => true,
+                            'quicktags' => false,
+                            'textarea_name' => 'task_text',
+                            'editor_class' => 'todo_content',
+                            'drag_drop_upload' => true,
+                            'media_buttons' => false
+                        );
+                        if ( $task ) {
+                            $content = html_entity_decode(esc_textarea( $task_content ));
+                            $editor_id = 'cpm-edit-task-' . $task->ID;
+                            
+                            wp_editor( $content, $editor_id, $wp_editor_settings );
+                        } else {
+                            $content = esc_textarea( $task_content );
+                            $editor_id = 'cpm-add-task-' . $list_id;
+                            
+                            wp_editor( $content, $editor_id, $wp_editor_settings );
+                        }
+                        ?>
                     </div>
                 </td>
                 <td>
@@ -182,7 +202,7 @@ function cpm_task_new_form( $list_id, $project_id, $task = null, $single = false
  * @param null|object $list
  * @return string
  */
-function cpm_tasklist_form( $project_id, $list = null ) {
+function cpm_tasklist_form( $project_id, $list = null, $add_task = null ) {
     $list_name = '';
     $list_detail = '';
     $action = 'cpm_add_list';
@@ -214,7 +234,21 @@ function cpm_tasklist_form( $project_id, $list = null ) {
         </div>
 
         <div class="item content">
-            <textarea name="tasklist_detail" class="tasklist_detail" cols="40" rows="2" placeholder="<?php esc_attr_e( 'Tasklist detail', 'cpm' ); ?>"><?php echo esc_textarea( $list_detail ); ?></textarea>
+            <?php
+            if ( $list ) {
+                $content = '';
+                $editor_id = 'cpm-edit-task-list-' . $list->ID;
+                $settings = array(
+                    'quicktags' => false,
+                    'textarea_name' => 'task_text',
+                    'editor_class' => 'todo_content',
+                    'drag_drop_upload' => true,
+                    'media_buttons' => false,
+                );
+                
+                wp_editor( $content, $editor_id, $settings );
+            }
+            ?>
         </div>
 
         <div class="item milestone">
@@ -292,7 +326,7 @@ function cpm_task_list_html( $list, $project_id ) {
             <?php echo cpm_tasklist_form( $project_id, $list ); ?>
         </div>
 
-        <ul class="cpm-todos">
+        <ul class="cpm-todos" id="todoList-<?php echo $list->ID; ?>">
             <?php
             $tasks = $task_obj->get_tasks( $list->ID, get_current_user_id() );
             $tasks = cpm_tasks_filter( $tasks );
@@ -364,6 +398,20 @@ function cpm_comment_form( $project_id, $object_id = 0, $comment = null ) {
             <?php wp_nonce_field( 'cpm_new_message' ); ?>
 
             <textarea name="cpm_message" cols="55" rows="8" placeholder="<?php esc_attr_e( 'Add a comment...', 'cpm' ); ?>"><?php echo esc_textarea( $text ); ?></textarea>
+            <?php
+            /*
+            $content = esc_attr_e( 'Add a comment...', 'cpm' );;
+            $editor_id = 'cpm-task-comments-' . $comment_id;
+            $settings = array(
+                'quicktags' => false,
+                'textarea_name' => 'cpm_message',
+                'drag_drop_upload' => true,
+                'media_buttons' => false,
+            );
+            
+            wp_editor( $content, $editor_id, $settings );
+            */
+            ?>
 
             <div class="cpm-attachment-area">
                 <?php cpm_upload_field( $comment_id, $files ); ?>
@@ -878,7 +926,7 @@ function get_clients() {
 function cpm_priority_tasks_metabox( $user_id = 1 ) { 
     $task_obj = CPM_Task::getInstance(); 
     $tasks = $task_obj->get_tasks_by_priority( $user_id );
-    $users = get_clients( 'orderby=display_name' );
+    $users = get_users( 'orderby=display_name' );
     $disabled = current_user_can( 'activate_plugins' ) ? '' : 'disabled';
 
     ob_start();
@@ -887,10 +935,10 @@ function cpm_priority_tasks_metabox( $user_id = 1 ) {
         <div class="postbox">
             <header class="clearfix">
                 <h3>
-                    <span><?php  _e( 'Manual Priorities', 'cpm' ) ?></span>
+                    <span><?php _e( 'Tasks by Priority', 'cpm' ) ?></span>
                     
                     <select class="users-dropdown" <?php echo $disabled ?>>
-                        <?php  foreach ( $users as $user ) : $selected = $user_id == $user->ID ? 'selected' : '';?>
+                        <?php foreach ( $users as $user ) : $selected = $user_id == $user->ID ? 'selected' : '';?>
                             <option value="<?php echo $user->ID ?>" <?php echo $selected ?>><?php echo $user->display_name ;?></option>
                         <?php endforeach; ?>
                     </select>
@@ -898,8 +946,9 @@ function cpm_priority_tasks_metabox( $user_id = 1 ) {
             </header>
             
             <span class="tasks-loading"></span>
+  				<div class="cpm-widgets">
             <?php echo cpm_priority_tasks( $tasks ) ?>
-            
+            </div>
         </div>
     </div>
     <?php
@@ -964,7 +1013,7 @@ function cpm_current_tasks_metabox( $user_id = 1 ) {
         <div class="postbox">
             <header class="clearfix">
                 <h3>
-                    <span><?php  _e( 'Current Tasks', 'cpm' ) ?></span>
+                    <span><?php  _e( 'Tasks by Date', 'cpm' ) ?></span>
                     
                     <select class="users-dropdown" <?php echo $disabled ?>>
                         <?php foreach ( $users as $user ) : $selected = $user_id == $user->ID ? 'selected' : '';?>
@@ -975,7 +1024,7 @@ function cpm_current_tasks_metabox( $user_id = 1 ) {
             </header>
             
             <span class="tasks-loading"></span>
-            <div class="cpm-todos inside">
+            <div class="cpm-widgets">
             <?php echo cpm_current_tasks( $tasks ) ?>
             </div>
             

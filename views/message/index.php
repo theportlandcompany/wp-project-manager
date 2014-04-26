@@ -10,7 +10,7 @@ cpm_get_header( __( 'Messages', 'cpm' ), $project_id );
 ?>
 
 <div class="cpm-nav-title">
-    <a class="button-primary" href="#"><?php _e( 'Add Message', 'cpm' ); ?></a>
+    <a id="cpm-new-message-btn" class="button-primary cpm-new-message-btn" href="#"><?php _e( 'Add Message', 'cpm' ); ?></a>
 
     <div class="cpm-new-message-form">
         <h3><?php _e( 'Create a new message', 'cpm' ); ?></h3>

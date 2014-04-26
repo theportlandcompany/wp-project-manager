@@ -5,7 +5,7 @@ Plugin URI: http://www.theportlandcompany.com/shop/product-category/custom-wordp
 Description: A fork of WP Project Management by Tareq Hasan.
 Author: The Portland Company
 Author URI: http://www.theportlandcompany.com
-Version: 1.0.1
+Version: 1.0.2
 */
 
 /**
@@ -104,7 +104,7 @@ class WeDevs_CPM {
         wp_enqueue_script( 'jquery-ui-core' );
         wp_enqueue_script( 'jquery-ui-dialog' );
         wp_enqueue_script( 'jquery-ui-datepicker' );
-        wp_enqueue_script( 'chosen', plugins_url( 'js/chosen.jquery.min.js', __FILE__ ) );
+        wp_enqueue_script( 'chosen-pm', plugins_url( 'js/chosen.jquery.min.js', __FILE__ ) );
         wp_enqueue_script( 'validate', plugins_url( 'js/jquery.validate.min.js', __FILE__ ) );
         wp_enqueue_script( 'autoresize-textarea', plugins_url( 'js/jquery.autosize.min.js', __FILE__ ) );
         wp_enqueue_script( 'plupload-handlers' );
@@ -113,7 +113,11 @@ class WeDevs_CPM {
         wp_enqueue_script( 'cpm_uploader', plugins_url( 'js/upload.js', __FILE__ ), array('jquery', 'plupload-handlers') );
         wp_enqueue_script( 'sortable', plugins_url( 'js/jquery.sortable.js', __FILE__ ), array('jquery') );
         wp_enqueue_script( 'cookie', plugins_url( 'js/jquery.cookie.js', __FILE__ ), array('jquery') );
-
+        wp_dequeue_script( 'chosen');
+    	  wp_deregister_script( 'chosen' );//dequeue woocomeerce chosen js script
+    	  wp_dequeue_script( 'chosenJS'); //dequeue paupress chosen js script
+    	  wp_deregister_script( 'chosenJS' );
+    	  
         wp_localize_script( 'cpm_admin', 'CPM_Vars', array(
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
             'nonce' => wp_create_nonce( 'cpm_nonce' ),
@@ -131,7 +135,11 @@ class WeDevs_CPM {
 
         wp_enqueue_style( 'cpm_admin', plugins_url( 'css/admin.css', __FILE__ ) );
         wp_enqueue_style( 'jquery-ui', plugins_url( 'css/jquery-ui-1.9.1.custom.css', __FILE__ ) );
-        wp_enqueue_style( 'chosen', plugins_url( 'css/chosen.css', __FILE__ ) );
+        wp_enqueue_style( 'chosen-pm', plugins_url( 'css/chosen.css', __FILE__ ) );
+        wp_dequeue_style( 'wc-chosen' );
+   	  wp_deregister_style( 'wc-chosen' );//deregister woocomeerce chosen css
+   	  wp_dequeue_style( 'chosenCSS' );
+   	  wp_deregister_style( 'chosenCSS' );//deregister woocomeerce chosen css
     }
 
     /**

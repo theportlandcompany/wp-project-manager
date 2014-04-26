@@ -52,13 +52,12 @@ if ( !$pro_obj->has_permission( $project ) ) {
 <h2 class="nav-tab-wrapper">
     <?php
     echo $pro_obj->nav_menu( $project_id, $cpm_active_menu );
-    echo "<a id='cpm-add-tasklist' href='#' class='button-primary'>";
-    _e( 'Add Task List', 'cpm' );
-    echo "</a>
     
-        <div class='cpm-new-todolist-form'>
-            " . cpm_tasklist_form( $project_id ) . "
-        </div>
-    ";
+    if ( $_GET['tab'] == 'task' ) {
+        
+        echo "<a id='cpm-add-tasklist' href='#' class='button-primary'>";
+        _e( 'Add Task List', 'cpm' );
+        echo "</a>";
+    }
     ?>
 </h2>

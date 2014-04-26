@@ -165,6 +165,18 @@ function cpm_project_users( $project_id ) {
         }        
     }
 }
+function cpm_project_users_shortened( $project_id ) {
+    $users = CPM_Project::getInstance()->get_users( $project_id );
+            
+    foreach ( $users as $user ) {
+        
+        $usernames = $user['name'];
+        
+        $initials = substr( $usernames, 0, 2);
+        echo "<span class='task-id' style='margin-right: 3px;'>" . $initials . "</span>";
+            
+    }
+}
 
 /**
  * Comment form upload field helper

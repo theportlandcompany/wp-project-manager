@@ -637,7 +637,8 @@
     //dom ready
     $(function() {
         weDevs_CPM.init();
-
+       
+        
         $('.project_coworker').chosen();
         $(".datepicker").datepicker();
     });

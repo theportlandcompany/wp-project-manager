@@ -6,6 +6,16 @@ cpm_get_header( __( 'Task List', 'cpm' ), $project_id );
 ?>
 
 <div class="cpm-nav-title">
+
+    <?php
+    
+    /* This displays the create new todo-list form. */
+    echo "
+        <div class='cpm-new-todolist-form'>
+            " . cpm_tasklist_form( $project_id ) . "
+        </div>
+    ";
+    ?>
     
     <ul class="cpm-todolists">
         <?php

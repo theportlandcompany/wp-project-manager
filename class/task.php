@@ -303,7 +303,6 @@ class CPM_Task {
         $sql .= " AND $wpdb->postmeta.meta_key = '_due'";
         $sql .= " GROUP BY $wpdb->posts.ID";
         $sql .= " ORDER BY CASE WHEN CAST( $wpdb->postmeta.meta_value AS DATE ) IS NULL THEN 1 ELSE 0 END, CAST( $wpdb->postmeta.meta_value AS DATE ) ASC, $wpdb->posts.ID ASC";
-        $sql .= " limit 100";
         
 
         $tasks = $wpdb->get_results( sprintf( $sql, $user_id ) );
