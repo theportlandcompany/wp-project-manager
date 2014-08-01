@@ -51,6 +51,7 @@
             $('ul.cpm-todolists').on('click', 'a.cpm-list-edit', this.toggleEditList);
             $('ul.cpm-todolists').on('click', 'a.list-cancel', this.toggleEditList);
             $('ul.cpm-todo-completed').on('click', '.cpm-todo-complete-toggle', this.toggleCompletedTasks);
+
             this.truncateTasks();
         },
 
@@ -540,7 +541,7 @@
         }
     };
 
-    $(function() {
+    $(document).ready(function() {
         CPM_Task.init();
     });
 
