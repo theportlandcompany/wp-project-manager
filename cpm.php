@@ -166,6 +166,41 @@ class WeDevs_CPM {
         add_submenu_page( 'cpm_projects', __( 'Projects', 'cpm' ), __( 'Projects', 'cpm' ), $capability, 'cpm_projects', array($this, 'admin_page_handler') );
 
         add_action( $hook, array($this, 'admin_scripts') );
+        add_action( 'admin_footer-' . $hook, array( $this, 'tinyMCEHook') );
+    }
+
+    /**
+     * Adds footer scripts to hook to tinymce
+     */
+    function tinyMCEHook( ) {
+        ?>
+        <script>
+            ( function( $, mce, init ) {
+                $( document ).ready( function( ) {
+                    var editorCount = 0;
+                    for( var i in init ) {
+                        editorCount++;
+                    }
+                    var interval = setInterval(check, 200);
+                    var count    = mce.editors.length;
+                    function check() {
+                        if(count == editorCount)
+                        {
+                            clearInterval(interval);
+                        } else {
+                            count = mce.editors.length;
+                            $( mce.editors ).each( function( i, obj ) {
+                                obj.onChange.add(function( ed, l ) {
+                                    var frameHeight = $( ed.contentAreaContainer ).find( 'iframe' ).contents( ).find( 'html' ).height( );
+                                    $( ed.contentAreaContainer ).css( { height: frameHeight + 'px' } );
+                                } );
+                            } );
+                        }
+                    }
+                } );
+            } )( jQuery, tinyMCE, tinyMCEPreInit.mceInit )
+        </script>
+        <?php
     }
 
     /**
