@@ -506,15 +506,21 @@
             var self = $(this)[0] == $('#priority-tasks')[0] ? $(this) : $('#priority-tasks'),
                 data = {
                     tasks: [],
-                    user_id: self.closest('.cpm-priority-tasks').find('header').children('select').val(),
+                    // user_id: self.closest('.cpm-priority-tasks').find('header').children('select').val(),
+                    user_id: self.closest('.cpm-priority-tasks').find('.users-dropdown').val(),
                     direction: $(this)[0] == $('#priority-tasks')[0] ? 'to' : 'from',
                     action: 'cpm_tasks_update_priority',
                     '_wpnonce': CPM_Vars.nonce
                 };
 
             // Donnot allow transfer is user_id is not equal
-            if (data.user_id != $('#current-tasks').closest('.cpm-current-tasks').find('header').children('select').val())
+            if (data.user_id != $('#current-tasks').closest('.cpm-current-tasks').find('.users-dropdown').val()) {
+                var notice = $( '<div class="error"><p>Users should be equal.</p></div>' );
+                $( '.wrap.cpm' ).prepend( notice );
+                notice.delay( 3000 ).hide( 'normal' );
+                self.prepend( dragging.item );
                 return;
+            }
 
             self.children('li').each(function(i, el){
                 data.tasks[$(el).index()] = $(el).children('input[type=checkbox]').val();

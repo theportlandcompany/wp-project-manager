@@ -219,7 +219,7 @@ class CPM_Task {
      * @return boolean true/false
      */
     function update_tasks_priority( $cur_tasks, $user_id, $direction = '' ) {
-        $flipped = array_flip( $cur_tasks );
+        $flipped = array_flip( ( array ) $cur_tasks );
 
         $old_tasks = $this->get_tasks_by_priority( $user_id );
         $old_task_ids = array();
